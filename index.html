@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Champions for Good · Your Network of Game Changers</title>
+<meta name="description" content="Finally: no boring networking. Ein Club für Athlet·innen, Unternehmer·innen, Führungskräfte und Investor·innen.">
+
+<!--
+  ═══════════════════════════════════════════════════════════════════════
+  CHAMPIONS 4 GOOD · RECREATION · JARVIS/Mega Brain
+  ═══════════════════════════════════════════════════════════════════════
+  REFERÊNCIA: https://www.champions4good.club/
+  TESE: preservar DNA (stickers multi-color · quirk tipográfico · bilíngue
+        DE/EN · anti-corporate · sports-energy) · SUPERAR em:
+          · hero com vídeo + carrossel crossfade + kinetic type
+          · stickers SVG animados com drift/rotação
+          · custom cursor + Lenis smooth scroll
+          · tier cards diferenciados (badge Most Popular · hover distinto)
+          · scroll-triggered reveals físicos (GSAP)
+          · tipografia display (Unbounded) no lugar de Webflow default
+          · dark mode toggle · prefers-reduced-motion respeitado
+  STACK: Tailwind CDN · GSAP + ScrollTrigger · Lenis · Google Fonts
+  ═══════════════════════════════════════════════════════════════════════
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        // Paleta multi-color do original · tiers
+        cream: '#FDFBF6',
+        ink: '#0B0B0F',
+        mint: '#86EFAC',
+        'mint-d': '#34D399',
+        orange: '#FB923C',
+        'orange-d': '#EA580C',
+        purple: '#7C3AED',
+        'purple-d': '#5B21B6',
+        magenta: '#EC4899',
+        'magenta-d': '#BE185D',
+        yellow: '#FDE047',
+        blue: '#60A5FA',
+        'blue-d': '#2563EB',
+        green: '#86EFAC',
+        line: '#E7E5E4',
+        dim: '#6B6B6B',
+      },
+      fontFamily: {
+        display: ['Unbounded', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+      },
+      letterSpacing: {
+        tightest: '-0.06em', tight: '-0.04em',
+        label: '0.14em',
+      },
+    }
+  }
+}
+</script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { color-scheme: light; --cursor-x: 50vw; --cursor-y: 50vh; }
+  html, body {
+    background: #FDFBF6; color: #0B0B0F;
+    font-family: 'Inter', sans-serif;
+    font-feature-settings: 'ss01','cv11','tnum';
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body.dark { background: #0B0B0F; color: #FDFBF6; }
+  body { cursor: none; }
+  @media (hover: none) and (pointer: coarse) {
+    body { cursor: auto; } .cursor-dot, .cursor-ring { display: none; }
+  }
+
+  .display { font-family: 'Unbounded', system-ui, sans-serif; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .label-mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; }
+
+  *:focus-visible { outline: 3px solid #FB923C; outline-offset: 3px; border-radius: 4px; }
+
+  /* CURSOR */
+  .cursor-dot, .cursor-ring {
+    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+    transform: translate3d(var(--cursor-x), var(--cursor-y), 0) translate(-50%, -50%);
+    transition: width .3s cubic-bezier(.22,1,.36,1), height .3s cubic-bezier(.22,1,.36,1), background .3s, border-color .3s, opacity .3s;
+    mix-blend-mode: difference;
+  }
+  .cursor-dot { width: 6px; height: 6px; background: #FB923C; border-radius: 50%; }
+  .cursor-ring { width: 32px; height: 32px; border: 1.5px solid rgba(251,146,60,.6); border-radius: 50%; }
+  body.cursor-hover .cursor-dot { width: 14px; height: 14px; background: #FDE047; }
+  body.cursor-hover .cursor-ring { width: 64px; height: 64px; border-color: #FDE047; border-width: 2px; }
+
+  /* ═══════════════════════ STICKERS (SVG inline animados) ═══════════════════════ */
+  .sticker {
+    position: absolute; pointer-events: none; will-change: transform;
+    filter: drop-shadow(0 6px 14px rgba(11,11,15,.08));
+  }
+  @keyframes drift1 { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(8px,-14px) rotate(5deg); } }
+  @keyframes drift2 { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(-12px,10px) rotate(-7deg); } }
+  @keyframes drift3 { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(14px,8px) rotate(10deg); } }
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+  .drift1 { animation: drift1 8s ease-in-out infinite; }
+  .drift2 { animation: drift2 11s ease-in-out infinite; }
+  .drift3 { animation: drift3 9s ease-in-out infinite; }
+  .spin-slow { animation: spin-slow 30s linear infinite; }
+
+  /* ═══════════════════════ HERO CAROUSEL ═══════════════════════ */
+  .hero-slide {
+    position: absolute; inset: 0; opacity: 0;
+    transition: opacity 1.6s cubic-bezier(.22,1,.36,1);
+    background-size: cover; background-position: center;
+    filter: grayscale(.2) contrast(1.05);
+  }
+  .hero-slide.active { opacity: 1; }
+  .hero-slide::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(11,11,15,.15) 0%, rgba(11,11,15,.5) 100%);
+  }
+
+  /* KINETIC TYPE · rotating headlines */
+  .kinetic-word { display: inline-block; overflow: hidden; vertical-align: bottom; }
+  .kinetic-word > span {
+    display: inline-block; transform: translateY(100%); will-change: transform;
+  }
+
+  /* MARQUEE */
+  @keyframes marquee-l { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  @keyframes marquee-r { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+  .marquee-l { animation: marquee-l 40s linear infinite; }
+  .marquee-r { animation: marquee-r 50s linear infinite; }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(20px); will-change: opacity, transform; }
+
+  /* TIER CARDS */
+  .tier {
+    position: relative; border: 2px solid transparent;
+    transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s, border-color .4s;
+    cursor: none;
+  }
+  .tier-athlete  { background: linear-gradient(145deg, #D1FAE5 0%, #A7F3D0 100%); }
+  .tier-booster  { background: linear-gradient(145deg, #FFEDD5 0%, #FED7AA 100%); }
+  .tier-business { background: linear-gradient(145deg, #E9D5FF 0%, #D8B4FE 100%); }
+  .tier-partner  { background: linear-gradient(145deg, #FCE7F3 0%, #FBCFE8 100%); }
+  .tier:hover { transform: translateY(-8px) rotate(-0.5deg); box-shadow: 0 40px 80px -30px rgba(11,11,15,.2); }
+  .tier-athlete:hover  { border-color: #34D399; }
+  .tier-booster:hover  { border-color: #EA580C; }
+  .tier-business:hover { border-color: #5B21B6; }
+  .tier-partner:hover  { border-color: #BE185D; transform: translateY(-12px) rotate(0.5deg); }
+
+  .tier-badge {
+    position: absolute; top: -12px; right: 20px;
+    background: #0B0B0F; color: #FDE047;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+    padding: 6px 12px; border-radius: 4px;
+    transform: rotate(3deg);
+  }
+
+  /* VALUE CARD */
+  .value-card {
+    background: #FDFBF6;
+    border: 1.5px solid #E7E5E4;
+    transition: all .4s cubic-bezier(.22,1,.36,1);
+    position: relative; overflow: hidden;
+  }
+  .value-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(251,146,60,.12), transparent 60%);
+    opacity: 0; transition: opacity .5s;
+  }
+  .value-card:hover { transform: translate(-2px, -2px); border-color: #0B0B0F; box-shadow: 6px 6px 0 0 #0B0B0F; }
+  .value-card:hover::before { opacity: 1; }
+
+  /* BENEFIT NUMBER */
+  .benefit-n {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(5rem, 12vw, 10rem);
+    font-weight: 800; line-height: 0.85;
+    letter-spacing: -0.05em;
+    background: linear-gradient(135deg, #FB923C 0%, #EC4899 60%, #7C3AED 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  /* MAGNETIC */
+  .magnetic { display: inline-block; will-change: transform; }
+
+  /* REDUCED MOTION */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      transition-duration: .2s !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+    .kinetic-word > span { transform: none; }
+    .hero-slide { transition: none; }
+    .drift1, .drift2, .drift3, .spin-slow, .marquee-l, .marquee-r { animation: none; }
+    body { cursor: auto; }
+    .cursor-dot, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- CURSOR -->
+<div class="cursor-ring"></div>
+<div class="cursor-dot"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     NAV
+     ═══════════════════════════════════════════════════════════════════════ -->
+<header id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-500">
+  <nav class="max-w-[1400px] mx-auto px-6 lg:px-10 py-5 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2 hover-target">
+      <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true">
+        <circle cx="18" cy="18" r="17" fill="#0B0B0F"/>
+        <path d="M11 18l5 5 9-12" stroke="#FDE047" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="display text-lg font-semibold tracking-tight">Champions<span class="text-orange">4</span>Good</span>
+    </a>
+    <ul class="hidden md:flex items-center gap-8 label-mono">
+      <li><a href="#members" class="hover:text-orange transition-colors hover-target">Members</a></li>
+      <li><a href="#events" class="hover:text-orange transition-colors hover-target">Events</a></li>
+      <li><a href="#faq" class="hover:text-orange transition-colors hover-target">FAQ</a></li>
+    </ul>
+    <div class="flex items-center gap-3">
+      <button id="themeToggle" class="hover-target w-10 h-10 rounded-full border border-ink/20 flex items-center justify-center hover:bg-ink hover:text-cream transition-colors" aria-label="Toggle theme">
+        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <a href="#join" class="magnetic hover-target bg-ink text-cream px-5 py-3 label-mono rounded-full hover:bg-orange transition-colors">Join</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     HERO · carrossel de fotos + kinetic type
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="top" class="relative min-h-screen overflow-hidden">
+  <!-- Carrossel (10 slides crossfade) -->
+  <div class="absolute inset-0">
+    <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1920&auto=format&q=75');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=1920&auto=format&q=75');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=1920&auto=format&q=75');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=1920&auto=format&q=75');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1920&auto=format&q=75');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1920&auto=format&q=75');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=1920&auto=format&q=75');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1564769625905-50e93615e769?w=1920&auto=format&q=75');"></div>
+  </div>
+
+  <!-- Stickers flutuantes -->
+  <div class="sticker drift1" style="top: 15%; left: 6%;">
+    <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="38" fill="#FDE047" stroke="#0B0B0F" stroke-width="2"/><text x="40" y="47" text-anchor="middle" font-family="Unbounded" font-weight="800" font-size="14" fill="#0B0B0F">GO!</text></svg>
+  </div>
+  <div class="sticker drift2" style="top: 22%; right: 10%;">
+    <svg width="96" height="96" viewBox="0 0 96 96"><polygon points="48,6 58,38 92,38 64,58 74,90 48,70 22,90 32,58 4,38 38,38" fill="#FB923C" stroke="#0B0B0F" stroke-width="2"/></svg>
+  </div>
+  <div class="sticker drift3 hidden md:block" style="bottom: 24%; right: 6%;">
+    <svg width="110" height="110" viewBox="0 0 110 110" class="spin-slow">
+      <defs><path id="circ" d="M 55 55 m -45 0 a 45 45 0 1 1 90 0 a 45 45 0 1 1 -90 0"/></defs>
+      <text font-family="JetBrains Mono" font-size="10" font-weight="600" letter-spacing="2" fill="#0B0B0F">
+        <textPath href="#circ">CHAMPIONS · FOR · GOOD · CLUB · 2026 ·</textPath>
+      </text>
+    </svg>
+  </div>
+
+  <!-- Conteúdo hero -->
+  <div class="relative z-10 min-h-screen flex items-end pb-20 pt-40 px-6 lg:px-10">
+    <div class="max-w-[1400px] mx-auto w-full">
+      <div class="mb-6 reveal">
+        <span class="label-mono text-cream/80 bg-ink/40 backdrop-blur-md px-3 py-1.5 rounded-full inline-block">Est. 2024 · Munich · Berlin · Zurich</span>
+      </div>
+
+      <h1 class="display text-cream font-bold tracking-tightest leading-[0.88] text-[clamp(2.75rem,10vw,9rem)] mb-10">
+        <div class="kinetic-word"><span>YOUR</span></div>
+        <div><span class="kinetic-word"><span>NET</span></span><span class="kinetic-word"><span class="text-orange">WORK</span></span></div>
+        <div class="kinetic-word"><span>OF GAME</span></div>
+        <div class="kinetic-word"><span class="italic" style="font-weight:400;">CHANGE</span></div><span class="kinetic-word"><span class="italic" style="font-weight:400; color:#FDE047;">RS.</span></span>
+      </h1>
+
+      <div class="flex flex-col sm:flex-row gap-5 items-start sm:items-center reveal">
+        <a href="#join" class="magnetic hover-target bg-cream text-ink px-8 py-4 rounded-full label-mono hover:bg-yellow transition-colors inline-flex items-center gap-2">
+          Join the club <span aria-hidden="true">→</span>
+        </a>
+        <a href="#why" class="magnetic hover-target text-cream px-4 py-4 label-mono hover:text-yellow transition-colors inline-flex items-center gap-2">
+          ↓ Read the why
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     INTRO · proposta de valor (DE primary + EN secondary)
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="why" class="relative py-32 px-6 lg:px-10 overflow-hidden">
+  <!-- Stickers -->
+  <div class="sticker drift2" style="top: 10%; left: 4%;">
+    <svg width="70" height="70" viewBox="0 0 70 70"><path d="M35 5 L65 35 L35 65 L5 35 Z" fill="#7C3AED" stroke="#0B0B0F" stroke-width="2"/></svg>
+  </div>
+  <div class="sticker drift1 hidden md:block" style="top: 55%; right: 8%;">
+    <svg width="90" height="90" viewBox="0 0 90 90"><circle cx="45" cy="45" r="30" fill="none" stroke="#EC4899" stroke-width="4"/><circle cx="45" cy="45" r="15" fill="#EC4899"/></svg>
+  </div>
+
+  <div class="max-w-[1200px] mx-auto">
+    <div class="reveal mb-10 flex items-center gap-3">
+      <span class="w-3 h-3 bg-mint-d rounded-full inline-block"></span>
+      <span class="label-mono text-dim">§ Why we exist</span>
+    </div>
+    <h2 class="reveal display text-[clamp(2.25rem,6vw,5rem)] font-medium leading-[1.02] tracking-tight mb-10 max-w-4xl">
+      Finally: <span class="italic text-orange-d">no boring networking.</span>
+    </h2>
+    <p class="reveal text-[clamp(1.125rem,1.8vw,1.5rem)] leading-[1.55] text-dim max-w-3xl mb-8 font-light">
+      Sondern <span class="text-ink font-medium">sportliche Events,</span> echte Begegnungen und neue Chancen für alle Mitglieder. In einer familiären Atmosphäre — ohne Krawatten, ohne Bullshit, ohne Kaltakquise.
+    </p>
+    <p class="reveal text-[15px] leading-[1.7] text-dim max-w-2xl font-light">
+      A community where olympic athletes, young founders, C-level executives and investors meet <em class="text-ink not-italic font-medium">around sport</em> — not around business cards.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MARQUEE · community tag
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="relative py-12 border-y border-ink/10 overflow-hidden bg-yellow">
+  <div class="marquee-l flex gap-16 whitespace-nowrap display font-bold text-ink" style="font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: -0.03em;">
+    <span>Athletes</span><span class="text-purple-d italic">·</span>
+    <span>Founders</span><span class="text-purple-d italic">·</span>
+    <span>Executives</span><span class="text-purple-d italic">·</span>
+    <span>Investors</span><span class="text-purple-d italic">·</span>
+    <span>Olympians</span><span class="text-purple-d italic">·</span>
+    <span>Athletes</span><span class="text-purple-d italic">·</span>
+    <span>Founders</span><span class="text-purple-d italic">·</span>
+    <span>Executives</span><span class="text-purple-d italic">·</span>
+    <span>Investors</span><span class="text-purple-d italic">·</span>
+    <span>Olympians</span><span class="text-purple-d italic">·</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     TESTEMUNHO · Deborah Levi (bob olympiasiegerin)
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section class="relative py-32 px-6 lg:px-10 bg-ink text-cream overflow-hidden">
+  <div class="sticker drift3" style="top: 15%; right: 10%; opacity: .4;">
+    <svg width="140" height="140" viewBox="0 0 140 140" class="spin-slow">
+      <path d="M70 10 L80 40 L110 40 L88 58 L96 90 L70 72 L44 90 L52 58 L30 40 L60 40 Z" fill="#FDE047"/>
+    </svg>
+  </div>
+
+  <div class="max-w-[1200px] mx-auto relative z-10">
+    <div class="reveal mb-10 flex items-center gap-3">
+      <span class="w-3 h-3 bg-yellow rounded-full inline-block"></span>
+      <span class="label-mono text-cream/70">§ Voice from the tribe</span>
+    </div>
+    <blockquote class="reveal">
+      <p class="display text-[clamp(1.75rem,4.5vw,4rem)] font-light leading-[1.1] tracking-tight mb-10">
+        <span class="text-yellow">“</span>Mit Champions for Good ist eine Plattform entstanden, die Athlet:innen Zugang zu einem vielseitigen Netzwerk eröffnet. <span class="italic text-yellow">Ohne die Silos zwischen Sport und Business.</span><span class="text-yellow">”</span>
+      </p>
+      <footer class="flex items-center gap-5 reveal">
+        <div class="w-16 h-16 bg-orange rounded-full flex items-center justify-center display font-bold text-2xl text-ink">DL</div>
+        <div>
+          <div class="display text-xl font-semibold">Deborah Levi</div>
+          <div class="label-mono text-cream/70">Olympiasiegerin · Bob · Beijing 2022</div>
+        </div>
+      </footer>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MISSION + 8 VALUES GRID
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="mission" class="relative py-32 px-6 lg:px-10 overflow-hidden">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="grid lg:grid-cols-[1fr_1.2fr] gap-16 mb-24">
+      <div>
+        <div class="reveal mb-6 flex items-center gap-3">
+          <span class="w-3 h-3 bg-magenta rounded-full inline-block"></span>
+          <span class="label-mono text-dim">§ Our mission</span>
+        </div>
+        <h2 class="reveal display text-[clamp(2rem,5vw,4rem)] font-medium leading-[1.05] tracking-tight mb-6">
+          Unser Ziel:<br>Neue <span class="italic text-purple-d">Chancen</span> für<br>Athlet·innen.
+        </h2>
+      </div>
+      <div>
+        <p class="reveal text-[17px] leading-[1.75] text-dim font-light">
+          Unsere Mission? <span class="text-ink font-medium">Die Regeln des klassischen Sponsorings und Networkings neu denken.</span> Wir verbinden Athlet·innen direkt mit Unternehmer·innen, Führungskräften und Investor·innen — durch sportliche Erfahrungen, nicht durch PowerPoint-Pitches.
+        </p>
+      </div>
+    </div>
+
+    <!-- Values Grid 8x -->
+    <div class="reveal mb-10 flex items-center gap-3">
+      <span class="label-mono text-dim">§ What we stand for · eight values</span>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="value-card reveal p-7">
+        <div class="label-mono text-orange mb-4">01</div>
+        <div class="display text-2xl font-semibold mb-2">IntegriTät</div>
+        <p class="text-sm text-dim leading-relaxed font-light">Integrity as operating system — nothing off the record.</p>
+      </div>
+      <div class="value-card reveal p-7">
+        <div class="label-mono text-purple-d mb-4">02</div>
+        <div class="display text-2xl font-semibold mb-2">DiversitäT</div>
+        <p class="text-sm text-dim leading-relaxed font-light">Sports, gender, origin, career. A plural tribe.</p>
+      </div>
+      <div class="value-card reveal p-7">
+        <div class="label-mono text-magenta-d mb-4">03</div>
+        <div class="display text-2xl font-semibold mb-2">Inklusion</div>
+        <p class="text-sm text-dim leading-relaxed font-light">Everyone sits at the same table — athlete or CEO.</p>
+      </div>
+      <div class="value-card reveal p-7">
+        <div class="label-mono text-mint-d mb-4">04</div>
+        <div class="display text-2xl font-semibold mb-2">Community</div>
+        <p class="text-sm text-dim leading-relaxed font-light">Tribe &gt; transaction. Always.</p>
+      </div>
+      <div class="value-card reveal p-7">
+        <div class="label-mono text-blue-d mb-4">05</div>
+        <div class="display text-2xl font-semibold mb-2">NachhaltigkeiT</div>
+        <p class="text-sm text-dim leading-relaxed font-light">Sustainable partnerships · long careers, not hype.</p>
+      </div>
+      <div class="value-card reveal p-7">
+        <div class="label-mono text-orange mb-4">06</div>
+        <div class="display text-2xl font-semibold mb-2">Exzellenz</div>
+        <p class="text-sm text-dim leading-relaxed font-light">Olympic standards of commitment on and off the pitch.</p>
+      </div>
+      <div class="value-card reveal p-7">
+        <div class="label-mono text-purple-d mb-4">07</div>
+        <div class="display text-2xl font-semibold mb-2">Vertrauen</div>
+        <p class="text-sm text-dim leading-relaxed font-light">Trust compounds · we are careful gatekeepers.</p>
+      </div>
+      <div class="value-card reveal p-7">
+        <div class="label-mono text-magenta-d mb-4">08</div>
+        <div class="display text-2xl font-semibold mb-2">READyness</div>
+        <p class="text-sm text-dim leading-relaxed font-light">When the opportunity comes, the tribe is already there.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MEMBERSHIPS · 4 TIERS (diferenciados)
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="members" class="relative py-32 px-6 lg:px-10 bg-cream overflow-hidden">
+  <div class="sticker drift1" style="top: 5%; left: 48%;">
+    <svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="32" fill="none" stroke="#0B0B0F" stroke-width="2" stroke-dasharray="4 6"/></svg>
+  </div>
+
+  <div class="max-w-[1400px] mx-auto">
+    <div class="reveal mb-10 flex items-center gap-3">
+      <span class="w-3 h-3 bg-blue-d rounded-full inline-block"></span>
+      <span class="label-mono text-dim">§ Four ways in</span>
+    </div>
+    <h2 class="reveal display text-[clamp(2rem,5.5vw,4.5rem)] font-medium leading-[1.02] tracking-tight mb-4 max-w-4xl">
+      Club <span class="italic text-orange-d">Memberships.</span>
+    </h2>
+    <p class="reveal text-[17px] leading-[1.7] text-dim max-w-2xl mb-20 font-light">
+      Pick the tier that matches your game. No pitch decks required.
+    </p>
+
+    <!-- 4 tiers -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- Athlete -->
+      <article class="tier tier-athlete hover-target rounded-3xl p-8 reveal">
+        <div class="flex items-center justify-between mb-8">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#0B0B0F" stroke-width="2" stroke-linecap="round">
+            <path d="M24 6l-8 14 8 8 8-8-8-14z"/><path d="M14 40l10-12 10 12"/><circle cx="24" cy="34" r="2" fill="#0B0B0F"/>
+          </svg>
+          <span class="label-mono text-ink/60">01</span>
+        </div>
+        <div class="display text-3xl font-bold mb-2">Athlete</div>
+        <div class="mb-6">
+          <span class="display text-4xl font-bold">Free</span>
+          <div class="label-mono text-ink/60 mt-1">Kostenfrei · verified only</div>
+        </div>
+        <ul class="space-y-3 text-[14px] text-ink/80 leading-relaxed mb-8">
+          <li>→ Full access to all events</li>
+          <li>→ Direct intro to sponsors</li>
+          <li>→ Career-after-sport track</li>
+          <li>→ Peer mentoring circle</li>
+        </ul>
+        <a href="#join" class="block text-center bg-ink text-cream py-3 rounded-full label-mono hover:bg-mint-d transition-colors">Apply</a>
+      </article>
+
+      <!-- Booster -->
+      <article class="tier tier-booster hover-target rounded-3xl p-8 reveal">
+        <div class="flex items-center justify-between mb-8">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#0B0B0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 4v14M14 18l-4 8 14 4 14-4-4-8M10 26l14 18 14-18"/>
+          </svg>
+          <span class="label-mono text-ink/60">02</span>
+        </div>
+        <div class="display text-3xl font-bold mb-2">Booster</div>
+        <div class="mb-6">
+          <span class="display text-4xl font-bold">€85</span>
+          <span class="text-ink/60">/mo</span>
+          <div class="label-mono text-ink/60 mt-1">Founders · &lt;2y in market</div>
+        </div>
+        <ul class="space-y-3 text-[14px] text-ink/80 leading-relaxed mb-8">
+          <li>→ All Athlete benefits</li>
+          <li>→ Pitch at tribe events</li>
+          <li>→ Peer accountability squad</li>
+          <li>→ Office-hours with members</li>
+        </ul>
+        <a href="#join" class="block text-center bg-ink text-cream py-3 rounded-full label-mono hover:bg-orange-d transition-colors">Join Booster</a>
+      </article>
+
+      <!-- Business · MOST POPULAR -->
+      <article class="tier tier-business hover-target rounded-3xl p-8 reveal" style="transform: translateY(-20px);">
+        <span class="tier-badge">Most chosen</span>
+        <div class="flex items-center justify-between mb-8">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#0B0B0F" stroke-width="2" stroke-linejoin="round">
+            <rect x="8" y="14" width="32" height="28" rx="2"/><path d="M18 14V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v6M8 24h32M24 20v10"/>
+          </svg>
+          <span class="label-mono text-ink/60">03</span>
+        </div>
+        <div class="display text-3xl font-bold mb-2">Business</div>
+        <div class="mb-6">
+          <span class="display text-4xl font-bold">€150+</span>
+          <span class="text-ink/60">/mo</span>
+          <div class="label-mono text-ink/60 mt-1">Executives · investors</div>
+        </div>
+        <ul class="space-y-3 text-[14px] text-ink/80 leading-relaxed mb-8">
+          <li>→ All previous benefits</li>
+          <li>→ Deal-flow access</li>
+          <li>→ Private sports mandates</li>
+          <li>→ C-level-only gatherings</li>
+          <li>→ Dedicated concierge</li>
+        </ul>
+        <a href="#join" class="block text-center bg-ink text-cream py-3 rounded-full label-mono hover:bg-purple-d transition-colors">Join Business</a>
+      </article>
+
+      <!-- Partner -->
+      <article class="tier tier-partner hover-target rounded-3xl p-8 reveal">
+        <div class="flex items-center justify-between mb-8">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#0B0B0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="18" r="8"/><circle cx="34" cy="30" r="8"/><path d="M6 42c2-8 8-12 12-12M30 42c2-8 8-12 12-12"/>
+          </svg>
+          <span class="label-mono text-ink/60">04</span>
+        </div>
+        <div class="display text-3xl font-bold mb-2">Partner</div>
+        <div class="mb-6">
+          <span class="display text-4xl font-bold">Custom</span>
+          <div class="label-mono text-ink/60 mt-1">Brands · sponsors · funds</div>
+        </div>
+        <ul class="space-y-3 text-[14px] text-ink/80 leading-relaxed mb-8">
+          <li>→ Strategic sponsoring</li>
+          <li>→ Athlete match-making</li>
+          <li>→ Co-hosted events</li>
+          <li>→ Custom activations</li>
+        </ul>
+        <a href="#join" class="block text-center bg-ink text-cream py-3 rounded-full label-mono hover:bg-magenta-d transition-colors">Talk to us</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     BENEFITS · 3 numerados + kinetic background
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="events" class="relative py-32 px-6 lg:px-10 bg-ink text-cream overflow-hidden">
+  <div class="sticker drift2" style="top: 8%; left: 5%; opacity: .6;">
+    <svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="#FB923C"/></svg>
+  </div>
+  <div class="sticker drift3" style="bottom: 10%; right: 5%; opacity: .6;">
+    <svg width="80" height="80" viewBox="0 0 80 80"><rect x="10" y="10" width="60" height="60" fill="#7C3AED" transform="rotate(20 40 40)"/></svg>
+  </div>
+
+  <div class="max-w-[1400px] mx-auto relative z-10">
+    <div class="reveal mb-10 flex items-center gap-3">
+      <span class="w-3 h-3 bg-yellow rounded-full inline-block"></span>
+      <span class="label-mono text-cream/70">§ Your benefits</span>
+    </div>
+    <h2 class="reveal display text-[clamp(2rem,5vw,4rem)] font-medium leading-[1.05] tracking-tight mb-20 max-w-3xl">
+      Three things you <span class="italic text-yellow">never</span> get at a regular conference.
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-10">
+      <div class="reveal">
+        <div class="benefit-n mb-6">01</div>
+        <div class="display text-2xl font-semibold mb-4">Skin-in-the-game access</div>
+        <p class="text-cream/75 leading-[1.7] text-[15px] font-light">
+          You play, you compete, you sweat. Business talk happens after the game — when the real conversation begins.
+        </p>
+      </div>
+      <div class="reveal">
+        <div class="benefit-n mb-6">02</div>
+        <div class="display text-2xl font-semibold mb-4">Zero-pitch zone</div>
+        <p class="text-cream/75 leading-[1.7] text-[15px] font-light">
+          No cold cards. No cold pitches. No cold networking. Relationships are built through experience, not through decks.
+        </p>
+      </div>
+      <div class="reveal">
+        <div class="benefit-n mb-6">03</div>
+        <div class="display text-2xl font-semibold mb-4">Career-after-sport rails</div>
+        <p class="text-cream/75 leading-[1.7] text-[15px] font-light">
+          Athletes graduate from the arena into boards, startups and funds — with a tribe that already knows their name.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     CTA · READy TO JOIN
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="join" class="relative py-32 px-6 lg:px-10 overflow-hidden">
+  <div class="sticker drift1 spin-slow" style="top: 20%; right: 8%;">
+    <svg width="180" height="180" viewBox="0 0 180 180">
+      <defs><path id="circ2" d="M 90 90 m -75 0 a 75 75 0 1 1 150 0 a 75 75 0 1 1 -150 0"/></defs>
+      <text font-family="JetBrains Mono" font-size="11" font-weight="600" letter-spacing="3" fill="#EC4899">
+        <textPath href="#circ2">· READY TO JOIN · READY TO JOIN · READY TO JOIN · READY TO JOIN ·</textPath>
+      </text>
+    </svg>
+  </div>
+
+  <div class="max-w-[1100px] mx-auto relative z-10">
+    <div class="reveal mb-8 flex items-center gap-3">
+      <span class="w-3 h-3 bg-orange rounded-full inline-block"></span>
+      <span class="label-mono text-dim">§ Conversation, not conversion</span>
+    </div>
+    <h2 class="reveal display text-[clamp(3rem,9vw,8rem)] font-bold leading-[0.9] tracking-tightest mb-12">
+      READy<br>to join?
+    </h2>
+    <p class="reveal text-[19px] leading-[1.6] text-dim max-w-2xl mb-12 font-light">
+      Vereinbare ein Gespräch mit unserem Team — 30 Minuten, ohne Agenda, ohne Sales. Wir hören zu und sagen dir ehrlich, ob dein Profil zur Tribe passt.
+    </p>
+    <div class="reveal flex flex-col sm:flex-row gap-4">
+      <a href="#" class="magnetic hover-target bg-ink text-cream px-8 py-5 rounded-full label-mono hover:bg-orange transition-colors inline-flex items-center gap-3">
+        Book 30-min call <span aria-hidden="true">→</span>
+      </a>
+      <a href="mailto:hello@champions4good.club" class="magnetic hover-target px-8 py-5 rounded-full label-mono border border-ink/20 hover:bg-ink hover:text-cream transition-all inline-flex items-center gap-3">
+        Write to us
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════════════ -->
+<footer class="bg-ink text-cream py-16 px-6 lg:px-10">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="grid md:grid-cols-4 gap-10 mb-12">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-2 mb-4">
+          <svg width="40" height="40" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="#FDE047"/><path d="M11 18l5 5 9-12" stroke="#0B0B0F" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="display text-2xl font-semibold">Champions<span class="text-orange">4</span>Good</span>
+        </div>
+        <p class="text-cream/70 max-w-sm text-[14px] leading-relaxed font-light">
+          The tribe where athletes, founders, executives and investors meet around sport — not around business cards.
+        </p>
+      </div>
+      <div>
+        <div class="label-mono text-cream/50 mb-4">Explore</div>
+        <ul class="space-y-2 text-[14px] font-light">
+          <li><a href="#members" class="hover:text-yellow transition-colors hover-target">Members</a></li>
+          <li><a href="#events" class="hover:text-yellow transition-colors hover-target">Events</a></li>
+          <li><a href="#faq" class="hover:text-yellow transition-colors hover-target">FAQ</a></li>
+          <li><a href="#join" class="hover:text-yellow transition-colors hover-target">Join</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="label-mono text-cream/50 mb-4">Legal</div>
+        <ul class="space-y-2 text-[14px] font-light">
+          <li><a href="#" class="hover:text-yellow transition-colors hover-target">Impressum</a></li>
+          <li><a href="#" class="hover:text-yellow transition-colors hover-target">Datenschutz</a></li>
+          <li><a href="#" class="hover:text-yellow transition-colors hover-target">AGB</a></li>
+          <li><a href="#" class="hover:text-yellow transition-colors hover-target">LinkedIn ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pt-8 border-t border-cream/10 flex flex-col md:flex-row justify-between gap-3 label-mono text-cream/40">
+      <span>© 2026 · Champions for Good · Munich</span>
+      <span>Recreated by JARVIS · Mega Brain · 2026-04</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isCoarse = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  gsap.registerPlugin(ScrollTrigger);
+  const EASE = 'power3.out';
+
+  /* 1 · LENIS */
+  if (!reducedMotion && typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10*t)), smoothWheel: true });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time*1000));
+    gsap.ticker.lagSmoothing(0);
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id.length > 1 && document.querySelector(id)) { e.preventDefault(); lenis.scrollTo(id, { offset: -80, duration: 1.4 }); }
+      });
+    });
+  }
+
+  /* 2 · CURSOR */
+  if (!isCoarse && !reducedMotion) {
+    const dot = document.querySelector('.cursor-dot');
+    const ring = document.querySelector('.cursor-ring');
+    let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+    addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.setProperty('--cursor-x', mx+'px'); dot.style.setProperty('--cursor-y', my+'px');
+    });
+    (function loop() {
+      rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+      ring.style.setProperty('--cursor-x', rx+'px'); ring.style.setProperty('--cursor-y', ry+'px');
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll('.hover-target, a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+    document.querySelectorAll('.magnetic').forEach(el => {
+      el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        gsap.to(el, { x: (e.clientX - r.left - r.width/2)*0.3, y: (e.clientY - r.top - r.height/2)*0.3, duration: 0.5, ease: EASE });
+      });
+      el.addEventListener('mouseleave', () => gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.5)' }));
+    });
+  }
+
+  /* 3 · NAV scroll state */
+  const nav = document.getElementById('nav');
+  ScrollTrigger.create({ start: 60, end: 999999, onUpdate: s => {
+    nav.classList.toggle('bg-cream/90', s.progress > 0);
+    nav.classList.toggle('backdrop-blur-md', s.progress > 0);
+    nav.classList.toggle('border-b', s.progress > 0);
+    nav.classList.toggle('border-ink/10', s.progress > 0);
+  }});
+
+  /* 4 · Hero carousel */
+  const slides = document.querySelectorAll('.hero-slide');
+  if (slides.length > 0 && !reducedMotion) {
+    let idx = 0;
+    setInterval(() => {
+      slides[idx].classList.remove('active');
+      idx = (idx + 1) % slides.length;
+      slides[idx].classList.add('active');
+    }, 4500);
+  }
+
+  /* 5 · Kinetic words */
+  if (!reducedMotion) {
+    gsap.to('.kinetic-word > span', { y: 0, duration: 1.2, ease: EASE, stagger: 0.08, delay: 0.3 });
+  } else {
+    document.querySelectorAll('.kinetic-word > span').forEach(s => s.style.transform = 'none');
+  }
+
+  /* 6 · Reveal */
+  if (!reducedMotion) {
+    document.querySelectorAll('.reveal').forEach(el => {
+      gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: EASE,
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true }});
+    });
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => { el.style.opacity = 1; el.style.transform = 'none'; });
+  }
+
+  /* 7 · Theme toggle */
+  const themeBtn = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    themeIcon.innerHTML = isDark
+      ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+      : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+  });
+
+})();
+</script>
+
+</body>
+</html>
