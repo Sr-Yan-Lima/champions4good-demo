@@ -3,30 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Champions for Good · Your Network of Game Changers</title>
-<meta name="description" content="Finally: no boring networking. Ein Club für Athlet·innen, Unternehmer·innen, Führungskräfte und Investor·innen.">
+<title>Champions for Good · Sport mit IntegriTaet — fuer ALL:e</title>
+<meta name="description" content="Wir denken Sponsoring und Networking neu. Fuer Champion:innen — von Champion:innen. Nicht fuer LinkedIn-Pitches.">
 
 <!--
   ═══════════════════════════════════════════════════════════════════════
-  CHAMPIONS 4 GOOD · RECREATION · JARVIS/Mega Brain
+  CHAMPIONS 4 GOOD · V2 · ZINE EDITION · Grid (UI Designer)
   ═══════════════════════════════════════════════════════════════════════
-  REFERÊNCIA: https://www.champions4good.club/
-  TESE: preservar DNA (stickers multi-color · quirk tipográfico · bilíngue
-        DE/EN · anti-corporate · sports-energy) · SUPERAR em:
-          · hero com vídeo + carrossel crossfade + kinetic type
-          · stickers SVG animados com drift/rotação
-          · custom cursor + Lenis smooth scroll
-          · tier cards diferenciados (badge Most Popular · hover distinto)
-          · scroll-triggered reveals físicos (GSAP)
-          · tipografia display (Unbounded) no lugar de Webflow default
-          · dark mode toggle · prefers-reduced-motion respeitado
-  STACK: Tailwind CDN · GSAP + ScrollTrigger · Lenis · Google Fonts
+  BRIEFING APOLLO: Zine alemão de ativismo esportivo
+  PALETA: mint-ambient · cream-paper · ink-black · sticker accents
+  TYPO: Inter 900 (display) + JetBrains Mono (labels/eyebrows)
+  QUIRKS: umlaut transliterado · gender-inclusive :innen · DE ≥60%
+  SOMBRAS: 6px 6px 0 #0B0B0B (chapadas · zero blur · zero gradient)
+  BORDAS: 2px solid ink-black · radius ≤ 12px
+  ═══════════════════════════════════════════════════════════════════════
+  RITMO (12 seções):
+   01 Hero kinetic [mint-ambient]
+   02 Manifesto bilíngue [mint-ambient]
+   03 Cluster "Werte" [cream-paper]
+   04 Números [ink-black]
+   05 Como funciona 3 steps [mint-deep]
+   06 Testemunho Deborah [mint-ambient]
+   07 Cluster "fuer wen" [cream-paper]
+   08 Tiers pricing 4 cards [cream-paper]
+   09 FAQ transliterado [cream-paper]
+   10 Cluster "JETZT" [mint-deep]
+   11 CTA final bilíngue [ink-black]
+   12 Footer kraft [cream-paper]
   ═══════════════════════════════════════════════════════════════════════
 -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -34,767 +43,1607 @@
 <script src="https://unpkg.com/lenis@1.0.42/dist/lenis.min.js"></script>
 
 <script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        // Paleta multi-color do original · tiers
-        cream: '#FDFBF6',
-        ink: '#0B0B0F',
-        mint: '#86EFAC',
-        'mint-d': '#34D399',
-        orange: '#FB923C',
-        'orange-d': '#EA580C',
-        purple: '#7C3AED',
-        'purple-d': '#5B21B6',
-        magenta: '#EC4899',
-        'magenta-d': '#BE185D',
-        yellow: '#FDE047',
-        blue: '#60A5FA',
-        'blue-d': '#2563EB',
-        green: '#86EFAC',
-        line: '#E7E5E4',
-        dim: '#6B6B6B',
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'mint-ambient':   '#86EFAC',
+          'mint-deep':      '#34D399',
+          'cream-paper':    '#FDFBF6',
+          'ink-black':      '#0B0B0B',
+          'sticker-red':    '#EF4444',
+          'sticker-yellow': '#FBBF24',
+          'sticker-blue':   '#60A5FA',
+          'muted-ink':      '#525252',
+        },
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        },
+        letterSpacing: {
+          tightest: '-0.055em',
+          tight:    '-0.035em',
+          label:    '0.16em',
+        },
+        boxShadow: {
+          'zine':    '6px 6px 0 #0B0B0B',
+          'zine-lg': '10px 10px 0 #0B0B0B',
+          'zine-sm': '4px 4px 0 #0B0B0B',
+          'zine-inv':'6px 6px 0 #FDFBF6',
+        },
+        borderWidth: {
+          zine: '2px',
+        },
       },
-      fontFamily: {
-        display: ['Unbounded', 'system-ui', 'sans-serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
-      },
-      letterSpacing: {
-        tightest: '-0.06em', tight: '-0.04em',
-        label: '0.14em',
-      },
-    }
-  }
-}
+    },
+  };
 </script>
 
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root { color-scheme: light; --cursor-x: 50vw; --cursor-y: 50vh; }
+
   html, body {
-    background: #FDFBF6; color: #0B0B0F;
-    font-family: 'Inter', sans-serif;
-    font-feature-settings: 'ss01','cv11','tnum';
+    background: #FDFBF6;
+    color: #0B0B0B;
+    font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    font-feature-settings: 'ss01','cv11','tnum';
   }
-  body.dark { background: #0B0B0F; color: #FDFBF6; }
+
   body { cursor: none; }
   @media (hover: none) and (pointer: coarse) {
-    body { cursor: auto; } .cursor-dot, .cursor-ring { display: none; }
+    body { cursor: auto; }
+    .cursor-dot, .cursor-ring { display: none !important; }
   }
 
-  .display { font-family: 'Unbounded', system-ui, sans-serif; }
-  .mono { font-family: 'JetBrains Mono', monospace; }
-  .label-mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; }
+  .mono  { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
 
-  *:focus-visible { outline: 3px solid #FB923C; outline-offset: 3px; border-radius: 4px; }
+  *:focus-visible {
+    outline: 3px solid #EF4444;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
 
-  /* CURSOR */
+  /* ═══════════════════════ CUSTOM CURSOR ═══════════════════════ */
   .cursor-dot, .cursor-ring {
-    position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
     transform: translate3d(var(--cursor-x), var(--cursor-y), 0) translate(-50%, -50%);
-    transition: width .3s cubic-bezier(.22,1,.36,1), height .3s cubic-bezier(.22,1,.36,1), background .3s, border-color .3s, opacity .3s;
+    transition: width .25s cubic-bezier(.22,1,.36,1), height .25s cubic-bezier(.22,1,.36,1), background .25s, border-color .25s;
     mix-blend-mode: difference;
   }
-  .cursor-dot { width: 6px; height: 6px; background: #FB923C; border-radius: 50%; }
-  .cursor-ring { width: 32px; height: 32px; border: 1.5px solid rgba(251,146,60,.6); border-radius: 50%; }
-  body.cursor-hover .cursor-dot { width: 14px; height: 14px; background: #FDE047; }
-  body.cursor-hover .cursor-ring { width: 64px; height: 64px; border-color: #FDE047; border-width: 2px; }
+  .cursor-dot  { width: 6px;  height: 6px;  background: #FDFBF6; border-radius: 50%; }
+  .cursor-ring { width: 32px; height: 32px; border: 2px solid #FDFBF6; border-radius: 50%; }
+  body.cursor-hover .cursor-dot  { width: 14px; height: 14px; background: #FBBF24; }
+  body.cursor-hover .cursor-ring { width: 56px; height: 56px; border-color: #FBBF24; }
 
-  /* ═══════════════════════ STICKERS (SVG inline animados) ═══════════════════════ */
+  /* ═══════════════════════ STICKERS ═══════════════════════ */
   .sticker {
-    position: absolute; pointer-events: none; will-change: transform;
-    filter: drop-shadow(0 6px 14px rgba(11,11,15,.08));
-  }
-  @keyframes drift1 { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(8px,-14px) rotate(5deg); } }
-  @keyframes drift2 { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(-12px,10px) rotate(-7deg); } }
-  @keyframes drift3 { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(14px,8px) rotate(10deg); } }
-  @keyframes spin-slow { to { transform: rotate(360deg); } }
-  .drift1 { animation: drift1 8s ease-in-out infinite; }
-  .drift2 { animation: drift2 11s ease-in-out infinite; }
-  .drift3 { animation: drift3 9s ease-in-out infinite; }
-  .spin-slow { animation: spin-slow 30s linear infinite; }
-
-  /* ═══════════════════════ HERO CAROUSEL ═══════════════════════ */
-  .hero-slide {
-    position: absolute; inset: 0; opacity: 0;
-    transition: opacity 1.6s cubic-bezier(.22,1,.36,1);
-    background-size: cover; background-position: center;
-    filter: grayscale(.2) contrast(1.05);
-  }
-  .hero-slide.active { opacity: 1; }
-  .hero-slide::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(11,11,15,.15) 0%, rgba(11,11,15,.5) 100%);
-  }
-
-  /* KINETIC TYPE · rotating headlines */
-  .kinetic-word { display: inline-block; overflow: hidden; vertical-align: bottom; }
-  .kinetic-word > span {
-    display: inline-block; transform: translateY(100%); will-change: transform;
-  }
-
-  /* MARQUEE */
-  @keyframes marquee-l { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-  @keyframes marquee-r { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-  .marquee-l { animation: marquee-l 40s linear infinite; }
-  .marquee-r { animation: marquee-r 50s linear infinite; }
-
-  /* REVEAL */
-  .reveal { opacity: 0; transform: translateY(20px); will-change: opacity, transform; }
-
-  /* TIER CARDS */
-  .tier {
-    position: relative; border: 2px solid transparent;
-    transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s, border-color .4s;
-    cursor: none;
-  }
-  .tier-athlete  { background: linear-gradient(145deg, #D1FAE5 0%, #A7F3D0 100%); }
-  .tier-booster  { background: linear-gradient(145deg, #FFEDD5 0%, #FED7AA 100%); }
-  .tier-business { background: linear-gradient(145deg, #E9D5FF 0%, #D8B4FE 100%); }
-  .tier-partner  { background: linear-gradient(145deg, #FCE7F3 0%, #FBCFE8 100%); }
-  .tier:hover { transform: translateY(-8px) rotate(-0.5deg); box-shadow: 0 40px 80px -30px rgba(11,11,15,.2); }
-  .tier-athlete:hover  { border-color: #34D399; }
-  .tier-booster:hover  { border-color: #EA580C; }
-  .tier-business:hover { border-color: #5B21B6; }
-  .tier-partner:hover  { border-color: #BE185D; transform: translateY(-12px) rotate(0.5deg); }
-
-  .tier-badge {
-    position: absolute; top: -12px; right: 20px;
-    background: #0B0B0F; color: #FDE047;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
-    padding: 6px 12px; border-radius: 4px;
-    transform: rotate(3deg);
-  }
-
-  /* VALUE CARD */
-  .value-card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     background: #FDFBF6;
-    border: 1.5px solid #E7E5E4;
-    transition: all .4s cubic-bezier(.22,1,.36,1);
-    position: relative; overflow: hidden;
+    border: 2px solid #0B0B0B;
+    box-shadow: 4px 4px 0 #0B0B0B;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    padding: 14px 18px;
+    position: absolute;
+    will-change: transform;
   }
-  .value-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(circle at 30% 30%, rgba(251,146,60,.12), transparent 60%);
-    opacity: 0; transition: opacity .5s;
-  }
-  .value-card:hover { transform: translate(-2px, -2px); border-color: #0B0B0F; box-shadow: 6px 6px 0 0 #0B0B0F; }
-  .value-card:hover::before { opacity: 1; }
+  .sticker.round  { border-radius: 999px; padding: 18px 24px; }
+  .sticker.square { border-radius: 4px; }
+  .sticker.tag    { border-radius: 2px; padding: 10px 14px; }
 
-  /* BENEFIT NUMBER */
-  .benefit-n {
-    font-family: 'Unbounded', sans-serif;
-    font-size: clamp(5rem, 12vw, 10rem);
-    font-weight: 800; line-height: 0.85;
-    letter-spacing: -0.05em;
-    background: linear-gradient(135deg, #FB923C 0%, #EC4899 60%, #7C3AED 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
+  .sticker-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
-  /* MAGNETIC */
-  .magnetic { display: inline-block; will-change: transform; }
+  .cluster {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+  }
+  @media (max-width: 767px) {
+    .cluster { max-width: 320px; aspect-ratio: 1 / 1.1; }
+  }
 
-  /* REDUCED MOTION */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: .01ms !important;
-      transition-duration: .2s !important;
+  /* ═══════════════════════ KINETIC HEADLINE ═══════════════════════ */
+  /* Flow: container mede altura via JS e seta --kinetic-h para evitar pulo no crossfade */
+  .kinetic-stack {
+    position: relative;
+    display: block;
+    min-height: var(--kinetic-h, auto);
+    transition: min-height .35s cubic-bezier(.22,1,.36,1);
+  }
+  .kinetic-line {
+    display: block;
+    opacity: 0;
+    transform: translateY(24px);
+    will-change: transform, opacity;
+  }
+  .kinetic-line.active { opacity: 1; transform: translateY(0); }
+
+  /* ═══════════════════════ STICKER DRIFT (idle · desktop only) ═══════════════════════ */
+  /* Flow: após entry stagger, stickers ganham vida com drift sutil.
+     2 variações com durações desiguais evitam sincronismo robótico.
+     Para em hover no sticker (atenção focada não pode vibrar). */
+  @keyframes sticker-drift-a {
+    0%,100% { transform: var(--sticker-base) translate(0,0); }
+    50%     { transform: var(--sticker-base) translate(0,-3px) rotate(0.6deg); }
+  }
+  @keyframes sticker-drift-b {
+    0%,100% { transform: var(--sticker-base) translate(0,0); }
+    50%     { transform: var(--sticker-base) translate(0,2px)  rotate(-0.6deg); }
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .cluster .sticker.is-drifting {
+      animation: sticker-drift-a 5.2s ease-in-out infinite;
     }
+    .cluster .sticker.is-drifting:nth-child(even) {
+      animation-name: sticker-drift-b;
+      animation-duration: 6.1s;
+    }
+    .cluster .sticker.is-drifting:hover { animation-play-state: paused; }
+  }
+
+  /* ═══════════════════════ TIER RIBBON ENTRY (Flow) ═══════════════════════ */
+  /* Badge nasce rodada + invisível, Flow injeta a pop-in com back.out quando tier entra no viewport */
+  .tier-ribbon {
+    will-change: transform, opacity;
+  }
+  .tier-ribbon.is-pending {
+    opacity: 0;
+    transform: rotate(4deg) scale(0.4);
+  }
+
+  /* ═══════════════════════ MANIFESTO PULL QUOTE ═══════════════════════ */
+  .pull-quote {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+  .pull-highlight {
+    background: #FBBF24;
+    padding: 0 10px 2px;
+    border: 2px solid #0B0B0B;
+    display: inline-block;
+    margin: 0 2px;
+    box-shadow: 3px 3px 0 #0B0B0B;
+  }
+
+  /* ═══════════════════════ NUMBERS SCOREBOARD ═══════════════════════ */
+  .scoreboard-num {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(56px, 12vw, 144px);
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+    color: #86EFAC;
+  }
+
+  /* ═══════════════════════ TIER CARDS ═══════════════════════ */
+  .tier {
+    position: relative;
+    border: 2px solid #0B0B0B;
+    border-radius: 8px;
+    padding: 32px 28px;
+    box-shadow: 6px 6px 0 #0B0B0B;
+    transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s cubic-bezier(.22,1,.36,1);
+    will-change: transform, box-shadow;
+    display: flex;
+    flex-direction: column;
+    min-height: 520px;
+  }
+  .tier:hover {
+    transform: translate(-2px, -4px);
+    box-shadow: 10px 10px 0 #0B0B0B;
+  }
+  .tier.is-dark:hover { box-shadow: 10px 10px 0 #86EFAC; }
+
+  .tier-price {
+    font-weight: 900;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.055em;
+  }
+  .tier-ribbon {
+    position: absolute;
+    top: -14px;
+    right: 16px;
+    background: #EF4444;
+    color: #FDFBF6;
+    padding: 6px 12px;
+    border: 2px solid #0B0B0B;
+    box-shadow: 3px 3px 0 #0B0B0B;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transform: rotate(4deg);
+  }
+
+  /* ═══════════════════════ BUTTONS ═══════════════════════ */
+  .btn-zine {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 24px;
+    border: 2px solid #0B0B0B;
+    border-radius: 999px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    box-shadow: 4px 4px 0 #0B0B0B;
+    transition: transform .2s, box-shadow .2s, background .2s, color .2s;
+    cursor: none;
+    will-change: transform;
+    min-height: 48px;
+    white-space: nowrap;
+  }
+  .btn-zine:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #0B0B0B;
+  }
+  .btn-primary  { background: #0B0B0B; color: #FDFBF6; }
+  .btn-primary:hover { background: #FBBF24; color: #0B0B0B; }
+  .btn-secondary { background: #FDFBF6; color: #0B0B0B; }
+  .btn-secondary:hover { background: #86EFAC; }
+  .btn-on-dark {
+    background: #86EFAC; color: #0B0B0B;
+    box-shadow: 4px 4px 0 #FDFBF6;
+  }
+  .btn-on-dark:hover {
+    background: #FBBF24;
+    box-shadow: 6px 6px 0 #FDFBF6;
+  }
+  @media (hover: none) and (pointer: coarse) {
+    .btn-zine { cursor: auto; }
+  }
+
+  /* ═══════════════════════ NAV ═══════════════════════ */
+  .nav-shell {
+    transition: background .25s, border-color .25s;
+  }
+  .nav-shell.is-scrolled {
+    background: #FDFBF6;
+    border-bottom: 2px solid #0B0B0B;
+    box-shadow: 0 2px 0 #0B0B0B;
+  }
+
+  /* ═══════════════════════ REVEAL ═══════════════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    will-change: transform, opacity;
+  }
+
+  /* ═══════════════════════ FAQ ═══════════════════════ */
+  .faq-item {
+    border: 2px solid #0B0B0B;
+    border-radius: 8px;
+    background: #FDFBF6;
+    overflow: hidden;
+    transition: box-shadow .2s;
+  }
+  .faq-item[open] { box-shadow: 4px 4px 0 #0B0B0B; }
+  .faq-item summary {
+    cursor: none;
+    padding: 20px 24px;
+    font-weight: 800;
+    font-size: clamp(18px, 2.5vw, 22px);
+    letter-spacing: -0.02em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: '+';
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: transform .25s;
+  }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-body {
+    padding: 0 24px 24px;
+    color: #525252;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  @media (hover: none) and (pointer: coarse) {
+    .faq-item summary { cursor: auto; }
+  }
+
+  /* ═══════════════════════ TAPE STRIP ═══════════════════════ */
+  .tape {
+    display: inline-block;
+    background: #FBBF24;
+    border: 2px solid #0B0B0B;
+    padding: 6px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transform: rotate(-2deg);
+    box-shadow: 3px 3px 0 #0B0B0B;
+  }
+
+  /* ═══════════════════════ DIVIDER STRIP ═══════════════════════ */
+  .divider-strip {
+    background: #0B0B0B;
+    color: #FDFBF6;
+    padding: 18px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 2px solid #0B0B0B;
+    border-bottom: 2px solid #0B0B0B;
+  }
+  .divider-track {
+    display: inline-block;
+    animation: divider-slide 28s linear infinite;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+  }
+  @keyframes divider-slide { to { transform: translateX(-50%); } }
+
+  /* ═══════════════════════ MOBILE RESETS ═══════════════════════ */
+  @media (max-width: 767px) {
+    .tier { min-height: auto; }
+  }
+
+  /* ═══════════════════════ PREFERS REDUCED MOTION ═══════════════════════ */
+  @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; }
-    .kinetic-word > span { transform: none; }
-    .hero-slide { transition: none; }
-    .drift1, .drift2, .drift3, .spin-slow, .marquee-l, .marquee-r { animation: none; }
-    body { cursor: auto; }
-    .cursor-dot, .cursor-ring { display: none; }
+    .kinetic-line { opacity: 1; transform: none; }
+    .divider-track { animation: none; }
+    .tier { transition: none; }
+    .btn-zine { transition: none; }
+    .cluster .sticker.is-drifting { animation: none !important; }
+    .tier-ribbon.is-pending { opacity: 1; transform: rotate(4deg); }
+    .kinetic-stack { transition: none; }
   }
 </style>
 </head>
 
 <body>
 
-<!-- CURSOR -->
-<div class="cursor-ring"></div>
-<div class="cursor-dot"></div>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     CURSOR
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     NAV
+     NAV · fixo no topo
      ═══════════════════════════════════════════════════════════════════════ -->
-<header id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-500">
-  <nav class="max-w-[1400px] mx-auto px-6 lg:px-10 py-5 flex items-center justify-between">
-    <a href="#top" class="flex items-center gap-2 hover-target">
-      <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true">
-        <circle cx="18" cy="18" r="17" fill="#0B0B0F"/>
-        <path d="M11 18l5 5 9-12" stroke="#FDE047" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="display text-lg font-semibold tracking-tight">Champions<span class="text-orange">4</span>Good</span>
+<nav id="nav" class="nav-shell fixed top-0 inset-x-0 z-50 px-5 md:px-10 py-4">
+  <div class="max-w-[1400px] mx-auto flex items-center justify-between gap-4">
+    <a href="#top" class="hover-target flex items-center gap-2">
+      <span class="inline-block w-9 h-9 bg-ink-black border-zine border-ink-black rounded-md flex items-center justify-center text-mint-ambient font-black text-lg leading-none">C</span>
+      <span class="font-black text-lg tracking-tight">Champions<span class="text-sticker-red">4</span>Good</span>
     </a>
-    <ul class="hidden md:flex items-center gap-8 label-mono">
-      <li><a href="#members" class="hover:text-orange transition-colors hover-target">Members</a></li>
-      <li><a href="#events" class="hover:text-orange transition-colors hover-target">Events</a></li>
-      <li><a href="#faq" class="hover:text-orange transition-colors hover-target">FAQ</a></li>
+
+    <ul class="hidden lg:flex items-center gap-7 eyebrow text-ink-black">
+      <li><a href="#manifesto" class="hover-target hover:text-sticker-red transition-colors">Manifest</a></li>
+      <li><a href="#werte" class="hover-target hover:text-sticker-red transition-colors">Werte</a></li>
+      <li><a href="#zahlen" class="hover-target hover:text-sticker-red transition-colors">Zahlen</a></li>
+      <li><a href="#tiers" class="hover-target hover:text-sticker-red transition-colors">Tiers</a></li>
+      <li><a href="#faq" class="hover-target hover:text-sticker-red transition-colors">FAQ</a></li>
     </ul>
-    <div class="flex items-center gap-3">
-      <button id="themeToggle" class="hover-target w-10 h-10 rounded-full border border-ink/20 flex items-center justify-center hover:bg-ink hover:text-cream transition-colors" aria-label="Toggle theme">
-        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-      </button>
-      <a href="#join" class="magnetic hover-target bg-ink text-cream px-5 py-3 label-mono rounded-full hover:bg-orange transition-colors">Join</a>
-    </div>
-  </nav>
-</header>
+
+    <a href="#join" class="btn-zine btn-primary magnetic hover-target">
+      Join <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</nav>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     HERO · carrossel de fotos + kinetic type
+     SEÇÃO 01 · HERO KINETIC [mint-ambient]
      ═══════════════════════════════════════════════════════════════════════ -->
-<section id="top" class="relative min-h-screen overflow-hidden">
-  <!-- Carrossel (10 slides crossfade) -->
-  <div class="absolute inset-0">
-    <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1920&auto=format&q=75');"></div>
-    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=1920&auto=format&q=75');"></div>
-    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=1920&auto=format&q=75');"></div>
-    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=1920&auto=format&q=75');"></div>
-    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1920&auto=format&q=75');"></div>
-    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1920&auto=format&q=75');"></div>
-    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1526232761682-d26e03ac148e?w=1920&auto=format&q=75');"></div>
-    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1564769625905-50e93615e769?w=1920&auto=format&q=75');"></div>
-  </div>
+<section id="top" class="relative bg-mint-ambient pt-32 md:pt-36 pb-20 md:pb-28 px-5 md:px-10 overflow-hidden border-b-2 border-ink-black">
 
-  <!-- Stickers flutuantes -->
-  <div class="sticker drift1" style="top: 15%; left: 6%;">
-    <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="38" fill="#FDE047" stroke="#0B0B0F" stroke-width="2"/><text x="40" y="47" text-anchor="middle" font-family="Unbounded" font-weight="800" font-size="14" fill="#0B0B0F">GO!</text></svg>
-  </div>
-  <div class="sticker drift2" style="top: 22%; right: 10%;">
-    <svg width="96" height="96" viewBox="0 0 96 96"><polygon points="48,6 58,38 92,38 64,58 74,90 48,70 22,90 32,58 4,38 38,38" fill="#FB923C" stroke="#0B0B0F" stroke-width="2"/></svg>
-  </div>
-  <div class="sticker drift3 hidden md:block" style="bottom: 24%; right: 6%;">
-    <svg width="110" height="110" viewBox="0 0 110 110" class="spin-slow">
-      <defs><path id="circ" d="M 55 55 m -45 0 a 45 45 0 1 1 90 0 a 45 45 0 1 1 -90 0"/></defs>
-      <text font-family="JetBrains Mono" font-size="10" font-weight="600" letter-spacing="2" fill="#0B0B0F">
-        <textPath href="#circ">CHAMPIONS · FOR · GOOD · CLUB · 2026 ·</textPath>
-      </text>
-    </svg>
-  </div>
-
-  <!-- Conteúdo hero -->
-  <div class="relative z-10 min-h-screen flex items-end pb-20 pt-40 px-6 lg:px-10">
-    <div class="max-w-[1400px] mx-auto w-full">
-      <div class="mb-6 reveal">
-        <span class="label-mono text-cream/80 bg-ink/40 backdrop-blur-md px-3 py-1.5 rounded-full inline-block">Est. 2024 · Munich · Berlin · Zurich</span>
-      </div>
-
-      <h1 class="display text-cream font-bold tracking-tightest leading-[0.88] text-[clamp(2.75rem,10vw,9rem)] mb-10">
-        <div class="kinetic-word"><span>YOUR</span></div>
-        <div><span class="kinetic-word"><span>NET</span></span><span class="kinetic-word"><span class="text-orange">WORK</span></span></div>
-        <div class="kinetic-word"><span>OF GAME</span></div>
-        <div class="kinetic-word"><span class="italic" style="font-weight:400;">CHANGE</span></div><span class="kinetic-word"><span class="italic" style="font-weight:400; color:#FDE047;">RS.</span></span>
-      </h1>
-
-      <div class="flex flex-col sm:flex-row gap-5 items-start sm:items-center reveal">
-        <a href="#join" class="magnetic hover-target bg-cream text-ink px-8 py-4 rounded-full label-mono hover:bg-yellow transition-colors inline-flex items-center gap-2">
-          Join the club <span aria-hidden="true">→</span>
-        </a>
-        <a href="#why" class="magnetic hover-target text-cream px-4 py-4 label-mono hover:text-yellow transition-colors inline-flex items-center gap-2">
-          ↓ Read the why
-        </a>
-      </div>
+  <!-- stickers decorativos flutuantes -->
+  <div class="hidden md:block sticker round" style="top: 15%; left: 5%; background: #FBBF24; transform: rotate(-8deg);">
+    <div class="text-center">
+      <div class="text-xl">EST.</div>
+      <div class="text-2xl">2024</div>
     </div>
   </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════
-     INTRO · proposta de valor (DE primary + EN secondary)
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section id="why" class="relative py-32 px-6 lg:px-10 overflow-hidden">
-  <!-- Stickers -->
-  <div class="sticker drift2" style="top: 10%; left: 4%;">
-    <svg width="70" height="70" viewBox="0 0 70 70"><path d="M35 5 L65 35 L35 65 L5 35 Z" fill="#7C3AED" stroke="#0B0B0F" stroke-width="2"/></svg>
+  <div class="hidden md:block sticker tag" style="top: 22%; right: 7%; background: #EF4444; color: #FDFBF6; transform: rotate(6deg);">
+    <div class="sticker-meta text-cream-paper">movement · 01</div>
   </div>
-  <div class="sticker drift1 hidden md:block" style="top: 55%; right: 8%;">
-    <svg width="90" height="90" viewBox="0 0 90 90"><circle cx="45" cy="45" r="30" fill="none" stroke="#EC4899" stroke-width="4"/><circle cx="45" cy="45" r="15" fill="#EC4899"/></svg>
-  </div>
-
-  <div class="max-w-[1200px] mx-auto">
-    <div class="reveal mb-10 flex items-center gap-3">
-      <span class="w-3 h-3 bg-mint-d rounded-full inline-block"></span>
-      <span class="label-mono text-dim">§ Why we exist</span>
-    </div>
-    <h2 class="reveal display text-[clamp(2.25rem,6vw,5rem)] font-medium leading-[1.02] tracking-tight mb-10 max-w-4xl">
-      Finally: <span class="italic text-orange-d">no boring networking.</span>
-    </h2>
-    <p class="reveal text-[clamp(1.125rem,1.8vw,1.5rem)] leading-[1.55] text-dim max-w-3xl mb-8 font-light">
-      Sondern <span class="text-ink font-medium">sportliche Events,</span> echte Begegnungen und neue Chancen für alle Mitglieder. In einer familiären Atmosphäre — ohne Krawatten, ohne Bullshit, ohne Kaltakquise.
-    </p>
-    <p class="reveal text-[15px] leading-[1.7] text-dim max-w-2xl font-light">
-      A community where olympic athletes, young founders, C-level executives and investors meet <em class="text-ink not-italic font-medium">around sport</em> — not around business cards.
-    </p>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════
-     MARQUEE · community tag
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section class="relative py-12 border-y border-ink/10 overflow-hidden bg-yellow">
-  <div class="marquee-l flex gap-16 whitespace-nowrap display font-bold text-ink" style="font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: -0.03em;">
-    <span>Athletes</span><span class="text-purple-d italic">·</span>
-    <span>Founders</span><span class="text-purple-d italic">·</span>
-    <span>Executives</span><span class="text-purple-d italic">·</span>
-    <span>Investors</span><span class="text-purple-d italic">·</span>
-    <span>Olympians</span><span class="text-purple-d italic">·</span>
-    <span>Athletes</span><span class="text-purple-d italic">·</span>
-    <span>Founders</span><span class="text-purple-d italic">·</span>
-    <span>Executives</span><span class="text-purple-d italic">·</span>
-    <span>Investors</span><span class="text-purple-d italic">·</span>
-    <span>Olympians</span><span class="text-purple-d italic">·</span>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════
-     TESTEMUNHO · Deborah Levi (bob olympiasiegerin)
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section class="relative py-32 px-6 lg:px-10 bg-ink text-cream overflow-hidden">
-  <div class="sticker drift3" style="top: 15%; right: 10%; opacity: .4;">
-    <svg width="140" height="140" viewBox="0 0 140 140" class="spin-slow">
-      <path d="M70 10 L80 40 L110 40 L88 58 L96 90 L70 72 L44 90 L52 58 L30 40 L60 40 Z" fill="#FDE047"/>
-    </svg>
-  </div>
-
-  <div class="max-w-[1200px] mx-auto relative z-10">
-    <div class="reveal mb-10 flex items-center gap-3">
-      <span class="w-3 h-3 bg-yellow rounded-full inline-block"></span>
-      <span class="label-mono text-cream/70">§ Voice from the tribe</span>
-    </div>
-    <blockquote class="reveal">
-      <p class="display text-[clamp(1.75rem,4.5vw,4rem)] font-light leading-[1.1] tracking-tight mb-10">
-        <span class="text-yellow">“</span>Mit Champions for Good ist eine Plattform entstanden, die Athlet:innen Zugang zu einem vielseitigen Netzwerk eröffnet. <span class="italic text-yellow">Ohne die Silos zwischen Sport und Business.</span><span class="text-yellow">”</span>
-      </p>
-      <footer class="flex items-center gap-5 reveal">
-        <div class="w-16 h-16 bg-orange rounded-full flex items-center justify-center display font-bold text-2xl text-ink">DL</div>
-        <div>
-          <div class="display text-xl font-semibold">Deborah Levi</div>
-          <div class="label-mono text-cream/70">Olympiasiegerin · Bob · Beijing 2022</div>
-        </div>
-      </footer>
-    </blockquote>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════
-     MISSION + 8 VALUES GRID
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section id="mission" class="relative py-32 px-6 lg:px-10 overflow-hidden">
-  <div class="max-w-[1400px] mx-auto">
-    <div class="grid lg:grid-cols-[1fr_1.2fr] gap-16 mb-24">
-      <div>
-        <div class="reveal mb-6 flex items-center gap-3">
-          <span class="w-3 h-3 bg-magenta rounded-full inline-block"></span>
-          <span class="label-mono text-dim">§ Our mission</span>
-        </div>
-        <h2 class="reveal display text-[clamp(2rem,5vw,4rem)] font-medium leading-[1.05] tracking-tight mb-6">
-          Unser Ziel:<br>Neue <span class="italic text-purple-d">Chancen</span> für<br>Athlet·innen.
-        </h2>
-      </div>
-      <div>
-        <p class="reveal text-[17px] leading-[1.75] text-dim font-light">
-          Unsere Mission? <span class="text-ink font-medium">Die Regeln des klassischen Sponsorings und Networkings neu denken.</span> Wir verbinden Athlet·innen direkt mit Unternehmer·innen, Führungskräften und Investor·innen — durch sportliche Erfahrungen, nicht durch PowerPoint-Pitches.
-        </p>
-      </div>
-    </div>
-
-    <!-- Values Grid 8x -->
-    <div class="reveal mb-10 flex items-center gap-3">
-      <span class="label-mono text-dim">§ What we stand for · eight values</span>
-    </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <div class="value-card reveal p-7">
-        <div class="label-mono text-orange mb-4">01</div>
-        <div class="display text-2xl font-semibold mb-2">IntegriTät</div>
-        <p class="text-sm text-dim leading-relaxed font-light">Integrity as operating system — nothing off the record.</p>
-      </div>
-      <div class="value-card reveal p-7">
-        <div class="label-mono text-purple-d mb-4">02</div>
-        <div class="display text-2xl font-semibold mb-2">DiversitäT</div>
-        <p class="text-sm text-dim leading-relaxed font-light">Sports, gender, origin, career. A plural tribe.</p>
-      </div>
-      <div class="value-card reveal p-7">
-        <div class="label-mono text-magenta-d mb-4">03</div>
-        <div class="display text-2xl font-semibold mb-2">Inklusion</div>
-        <p class="text-sm text-dim leading-relaxed font-light">Everyone sits at the same table — athlete or CEO.</p>
-      </div>
-      <div class="value-card reveal p-7">
-        <div class="label-mono text-mint-d mb-4">04</div>
-        <div class="display text-2xl font-semibold mb-2">Community</div>
-        <p class="text-sm text-dim leading-relaxed font-light">Tribe &gt; transaction. Always.</p>
-      </div>
-      <div class="value-card reveal p-7">
-        <div class="label-mono text-blue-d mb-4">05</div>
-        <div class="display text-2xl font-semibold mb-2">NachhaltigkeiT</div>
-        <p class="text-sm text-dim leading-relaxed font-light">Sustainable partnerships · long careers, not hype.</p>
-      </div>
-      <div class="value-card reveal p-7">
-        <div class="label-mono text-orange mb-4">06</div>
-        <div class="display text-2xl font-semibold mb-2">Exzellenz</div>
-        <p class="text-sm text-dim leading-relaxed font-light">Olympic standards of commitment on and off the pitch.</p>
-      </div>
-      <div class="value-card reveal p-7">
-        <div class="label-mono text-purple-d mb-4">07</div>
-        <div class="display text-2xl font-semibold mb-2">Vertrauen</div>
-        <p class="text-sm text-dim leading-relaxed font-light">Trust compounds · we are careful gatekeepers.</p>
-      </div>
-      <div class="value-card reveal p-7">
-        <div class="label-mono text-magenta-d mb-4">08</div>
-        <div class="display text-2xl font-semibold mb-2">READyness</div>
-        <p class="text-sm text-dim leading-relaxed font-light">When the opportunity comes, the tribe is already there.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════
-     MEMBERSHIPS · 4 TIERS (diferenciados)
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section id="members" class="relative py-32 px-6 lg:px-10 bg-cream overflow-hidden">
-  <div class="sticker drift1" style="top: 5%; left: 48%;">
-    <svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="32" fill="none" stroke="#0B0B0F" stroke-width="2" stroke-dasharray="4 6"/></svg>
-  </div>
-
-  <div class="max-w-[1400px] mx-auto">
-    <div class="reveal mb-10 flex items-center gap-3">
-      <span class="w-3 h-3 bg-blue-d rounded-full inline-block"></span>
-      <span class="label-mono text-dim">§ Four ways in</span>
-    </div>
-    <h2 class="reveal display text-[clamp(2rem,5.5vw,4.5rem)] font-medium leading-[1.02] tracking-tight mb-4 max-w-4xl">
-      Club <span class="italic text-orange-d">Memberships.</span>
-    </h2>
-    <p class="reveal text-[17px] leading-[1.7] text-dim max-w-2xl mb-20 font-light">
-      Pick the tier that matches your game. No pitch decks required.
-    </p>
-
-    <!-- 4 tiers -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-      <!-- Athlete -->
-      <article class="tier tier-athlete hover-target rounded-3xl p-8 reveal">
-        <div class="flex items-center justify-between mb-8">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#0B0B0F" stroke-width="2" stroke-linecap="round">
-            <path d="M24 6l-8 14 8 8 8-8-8-14z"/><path d="M14 40l10-12 10 12"/><circle cx="24" cy="34" r="2" fill="#0B0B0F"/>
-          </svg>
-          <span class="label-mono text-ink/60">01</span>
-        </div>
-        <div class="display text-3xl font-bold mb-2">Athlete</div>
-        <div class="mb-6">
-          <span class="display text-4xl font-bold">Free</span>
-          <div class="label-mono text-ink/60 mt-1">Kostenfrei · verified only</div>
-        </div>
-        <ul class="space-y-3 text-[14px] text-ink/80 leading-relaxed mb-8">
-          <li>→ Full access to all events</li>
-          <li>→ Direct intro to sponsors</li>
-          <li>→ Career-after-sport track</li>
-          <li>→ Peer mentoring circle</li>
-        </ul>
-        <a href="#join" class="block text-center bg-ink text-cream py-3 rounded-full label-mono hover:bg-mint-d transition-colors">Apply</a>
-      </article>
-
-      <!-- Booster -->
-      <article class="tier tier-booster hover-target rounded-3xl p-8 reveal">
-        <div class="flex items-center justify-between mb-8">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#0B0B0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M24 4v14M14 18l-4 8 14 4 14-4-4-8M10 26l14 18 14-18"/>
-          </svg>
-          <span class="label-mono text-ink/60">02</span>
-        </div>
-        <div class="display text-3xl font-bold mb-2">Booster</div>
-        <div class="mb-6">
-          <span class="display text-4xl font-bold">€85</span>
-          <span class="text-ink/60">/mo</span>
-          <div class="label-mono text-ink/60 mt-1">Founders · &lt;2y in market</div>
-        </div>
-        <ul class="space-y-3 text-[14px] text-ink/80 leading-relaxed mb-8">
-          <li>→ All Athlete benefits</li>
-          <li>→ Pitch at tribe events</li>
-          <li>→ Peer accountability squad</li>
-          <li>→ Office-hours with members</li>
-        </ul>
-        <a href="#join" class="block text-center bg-ink text-cream py-3 rounded-full label-mono hover:bg-orange-d transition-colors">Join Booster</a>
-      </article>
-
-      <!-- Business · MOST POPULAR -->
-      <article class="tier tier-business hover-target rounded-3xl p-8 reveal" style="transform: translateY(-20px);">
-        <span class="tier-badge">Most chosen</span>
-        <div class="flex items-center justify-between mb-8">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#0B0B0F" stroke-width="2" stroke-linejoin="round">
-            <rect x="8" y="14" width="32" height="28" rx="2"/><path d="M18 14V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v6M8 24h32M24 20v10"/>
-          </svg>
-          <span class="label-mono text-ink/60">03</span>
-        </div>
-        <div class="display text-3xl font-bold mb-2">Business</div>
-        <div class="mb-6">
-          <span class="display text-4xl font-bold">€150+</span>
-          <span class="text-ink/60">/mo</span>
-          <div class="label-mono text-ink/60 mt-1">Executives · investors</div>
-        </div>
-        <ul class="space-y-3 text-[14px] text-ink/80 leading-relaxed mb-8">
-          <li>→ All previous benefits</li>
-          <li>→ Deal-flow access</li>
-          <li>→ Private sports mandates</li>
-          <li>→ C-level-only gatherings</li>
-          <li>→ Dedicated concierge</li>
-        </ul>
-        <a href="#join" class="block text-center bg-ink text-cream py-3 rounded-full label-mono hover:bg-purple-d transition-colors">Join Business</a>
-      </article>
-
-      <!-- Partner -->
-      <article class="tier tier-partner hover-target rounded-3xl p-8 reveal">
-        <div class="flex items-center justify-between mb-8">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#0B0B0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="18" r="8"/><circle cx="34" cy="30" r="8"/><path d="M6 42c2-8 8-12 12-12M30 42c2-8 8-12 12-12"/>
-          </svg>
-          <span class="label-mono text-ink/60">04</span>
-        </div>
-        <div class="display text-3xl font-bold mb-2">Partner</div>
-        <div class="mb-6">
-          <span class="display text-4xl font-bold">Custom</span>
-          <div class="label-mono text-ink/60 mt-1">Brands · sponsors · funds</div>
-        </div>
-        <ul class="space-y-3 text-[14px] text-ink/80 leading-relaxed mb-8">
-          <li>→ Strategic sponsoring</li>
-          <li>→ Athlete match-making</li>
-          <li>→ Co-hosted events</li>
-          <li>→ Custom activations</li>
-        </ul>
-        <a href="#join" class="block text-center bg-ink text-cream py-3 rounded-full label-mono hover:bg-magenta-d transition-colors">Talk to us</a>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════
-     BENEFITS · 3 numerados + kinetic background
-     ═══════════════════════════════════════════════════════════════════════ -->
-<section id="events" class="relative py-32 px-6 lg:px-10 bg-ink text-cream overflow-hidden">
-  <div class="sticker drift2" style="top: 8%; left: 5%; opacity: .6;">
-    <svg width="70" height="70" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="#FB923C"/></svg>
-  </div>
-  <div class="sticker drift3" style="bottom: 10%; right: 5%; opacity: .6;">
-    <svg width="80" height="80" viewBox="0 0 80 80"><rect x="10" y="10" width="60" height="60" fill="#7C3AED" transform="rotate(20 40 40)"/></svg>
+  <div class="hidden lg:block sticker square" style="bottom: 18%; left: 8%; background: #60A5FA; transform: rotate(4deg);">
+    <div class="text-sm">fuer<br/>ALL:e</div>
   </div>
 
   <div class="max-w-[1400px] mx-auto relative z-10">
-    <div class="reveal mb-10 flex items-center gap-3">
-      <span class="w-3 h-3 bg-yellow rounded-full inline-block"></span>
-      <span class="label-mono text-cream/70">§ Your benefits</span>
-    </div>
-    <h2 class="reveal display text-[clamp(2rem,5vw,4rem)] font-medium leading-[1.05] tracking-tight mb-20 max-w-3xl">
-      Three things you <span class="italic text-yellow">never</span> get at a regular conference.
-    </h2>
 
-    <div class="grid md:grid-cols-3 gap-10">
-      <div class="reveal">
-        <div class="benefit-n mb-6">01</div>
-        <div class="display text-2xl font-semibold mb-4">Skin-in-the-game access</div>
-        <p class="text-cream/75 leading-[1.7] text-[15px] font-light">
-          You play, you compete, you sweat. Business talk happens after the game — when the real conversation begins.
-        </p>
+    <!-- eyebrow -->
+    <div class="reveal flex items-center gap-3 mb-8 md:mb-10">
+      <span class="w-3 h-3 bg-ink-black rounded-full inline-block"></span>
+      <span class="eyebrow">§ 01 · Club der Bewegung · movement 2024</span>
+    </div>
+
+    <!-- sub-statement -->
+    <div class="reveal mb-5">
+      <span class="tape">WIRkung statt Worte.</span>
+    </div>
+
+    <!-- HEADLINE KINETIC -->
+    <h1 class="reveal kinetic-stack font-black tracking-tightest leading-[0.88]"
+        style="font-size: clamp(40px, 11vw, 128px);">
+      <span class="kinetic-line active">
+        Sport mit<br/>
+        <span class="inline-block" style="background:#FBBF24;border:2px solid #0B0B0B;padding:0 14px;box-shadow:6px 6px 0 #0B0B0B;transform:rotate(-1deg);margin:8px 6px 0 0;">IntegriTaet</span>
+        <br/>— fuer ALL:e.
+      </span>
+      <span class="kinetic-line absolute inset-0">
+        We rewrite den<br/>
+        <span class="inline-block" style="background:#EF4444;color:#FDFBF6;border:2px solid #0B0B0B;padding:0 14px;box-shadow:6px 6px 0 #0B0B0B;transform:rotate(1deg);margin:8px 6px 0 0;">Playbook</span>.<br/>JETZT.
+      </span>
+      <span class="kinetic-line absolute inset-0">
+        READy fuer<br/>
+        <span class="inline-block" style="background:#60A5FA;border:2px solid #0B0B0B;padding:0 14px;box-shadow:6px 6px 0 #0B0B0B;transform:rotate(-1.5deg);margin:8px 6px 0 0;">das echte</span>
+        <br/>Spiel?
+      </span>
+    </h1>
+
+    <!-- sub copy + CTA -->
+    <div class="reveal mt-10 md:mt-14 grid md:grid-cols-[1fr_auto] gap-8 md:gap-12 items-end">
+      <p class="max-w-xl text-[17px] md:text-[19px] leading-[1.5] text-ink-black/80">
+        Der Club fuer Athlet:innen, Unternehmer:innen, Executives und Investor:innen. Nicht fuer LinkedIn-Pitches. Nicht fuer Cold Outreach. <strong class="font-black">Nur fuer echte Begegnungen.</strong>
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a href="#join" class="btn-zine btn-primary magnetic hover-target">
+          Join the movement <span aria-hidden="true">→</span>
+        </a>
+        <a href="#manifesto" class="btn-zine btn-secondary magnetic hover-target">
+          Manifest lesen
+        </a>
       </div>
-      <div class="reveal">
-        <div class="benefit-n mb-6">02</div>
-        <div class="display text-2xl font-semibold mb-4">Zero-pitch zone</div>
-        <p class="text-cream/75 leading-[1.7] text-[15px] font-light">
-          No cold cards. No cold pitches. No cold networking. Relationships are built through experience, not through decks.
-        </p>
-      </div>
-      <div class="reveal">
-        <div class="benefit-n mb-6">03</div>
-        <div class="display text-2xl font-semibold mb-4">Career-after-sport rails</div>
-        <p class="text-cream/75 leading-[1.7] text-[15px] font-light">
-          Athletes graduate from the arena into boards, startups and funds — with a tribe that already knows their name.
-        </p>
-      </div>
+    </div>
+
+    <!-- Mini pill row de proof -->
+    <div class="reveal mt-14 md:mt-20 flex flex-wrap gap-3 md:gap-4 items-center">
+      <span class="eyebrow text-ink-black/60">§ trusted by:</span>
+      <span class="sticker-meta px-3 py-2 border-zine border-ink-black rounded-full bg-cream-paper">240+ Athlet:innen</span>
+      <span class="sticker-meta px-3 py-2 border-zine border-ink-black rounded-full bg-cream-paper">15 Laender</span>
+      <span class="sticker-meta px-3 py-2 border-zine border-ink-black rounded-full bg-cream-paper">45 Events / Jahr</span>
+      <span class="sticker-meta px-3 py-2 border-zine border-ink-black rounded-full bg-sticker-yellow">0 langweilige Panels</span>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     CTA · READy TO JOIN
+     DIVIDER · marquee tape
      ═══════════════════════════════════════════════════════════════════════ -->
-<section id="join" class="relative py-32 px-6 lg:px-10 overflow-hidden">
-  <div class="sticker drift1 spin-slow" style="top: 20%; right: 8%;">
-    <svg width="180" height="180" viewBox="0 0 180 180">
-      <defs><path id="circ2" d="M 90 90 m -75 0 a 75 75 0 1 1 150 0 a 75 75 0 1 1 -150 0"/></defs>
-      <text font-family="JetBrains Mono" font-size="11" font-weight="600" letter-spacing="3" fill="#EC4899">
-        <textPath href="#circ2">· READY TO JOIN · READY TO JOIN · READY TO JOIN · READY TO JOIN ·</textPath>
-      </text>
-    </svg>
+<div class="divider-strip" data-parallax="0.3" aria-hidden="true">
+  <div class="divider-track">
+    · SPORT MIT INTEGRITAET · FUER ALL:E · KEINE QUOTEN NUR QUALITAET:AET · READY FUER DAS ECHTE SPIEL · WIRKUNG STATT WORTE · JETZT · SPORT MIT INTEGRITAET · FUER ALL:E · KEINE QUOTEN NUR QUALITAET:AET · READY FUER DAS ECHTE SPIEL · WIRKUNG STATT WORTE · JETZT ·
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SEÇÃO 02 · MANIFESTO BILÍNGUE [mint-ambient]
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="manifesto" class="bg-mint-ambient py-20 md:py-32 px-5 md:px-10 border-b-2 border-ink-black">
+  <div class="max-w-[1200px] mx-auto">
+
+    <div class="reveal flex items-center gap-3 mb-10">
+      <span class="w-3 h-3 bg-sticker-red rounded-full inline-block"></span>
+      <span class="eyebrow">§ 02 · Manifest der Bewegung</span>
+    </div>
+
+    <div class="reveal pull-quote text-ink-black mb-12"
+         style="font-size: clamp(28px, 5vw, 56px);">
+      Die klass-ischen Regeln sind <span class="pull-highlight">mUEde</span>.<br/>
+      Wir denken Sponsoring und Networking <span class="pull-highlight" style="background:#EF4444;color:#FDFBF6;">neu</span>.<br/>
+      Fuer Champion:innen — <span class="pull-highlight" style="background:#60A5FA;">von Champion:innen</span>.
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 md:gap-12 mt-16">
+      <div class="reveal">
+        <div class="eyebrow mb-4 text-ink-black/70">§ DE · warum wir hier sind</div>
+        <p class="text-[17px] md:text-[18px] leading-[1.6] font-medium text-ink-black/85">
+          Wir sind kein Club fuer Visitenkarten. Wir sind ein Kollektiv von Athlet:innen, die nach dem Spiel weitermachen. Von Unternehmer:innen, die nicht an Quoten, sondern an Qualitaet:aet glauben. Von Executives, die wissen: <strong class="font-black">der naechste grosse Deal entsteht nicht auf dem Panel — sondern nach dem Marathon.</strong>
+        </p>
+      </div>
+      <div class="reveal">
+        <div class="eyebrow mb-4 text-ink-black/70">§ EN · short version</div>
+        <p class="text-[17px] md:text-[18px] leading-[1.6] font-medium text-ink-black/85">
+          We are not a club for business cards. We are a collective of champions — athletes who keep moving after the game, founders who bet on quality over quotas, executives who know the real deal happens <strong class="font-black">off-stage, after the run, during the game.</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- Signature-style block -->
+    <div class="reveal mt-16 flex flex-wrap items-center gap-4">
+      <span class="tape" style="transform: rotate(-1deg);">signed · Champions for Good · Munich</span>
+      <span class="eyebrow text-ink-black/60">2024 — ∞</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SEÇÃO 03 · CLUSTER "WERTE" [cream-paper]
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="werte" class="bg-cream-paper py-20 md:py-32 px-5 md:px-10 border-b-2 border-ink-black">
+  <div class="max-w-[1400px] mx-auto">
+
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+      <!-- LEFT · Copy -->
+      <div>
+        <div class="reveal flex items-center gap-3 mb-6">
+          <span class="w-3 h-3 bg-mint-deep rounded-full inline-block"></span>
+          <span class="eyebrow">§ 03 · Werte der Tribe</span>
+        </div>
+
+        <h2 class="reveal font-black tracking-tightest leading-[0.9] mb-8"
+            style="font-size: clamp(40px, 7vw, 88px);">
+          Vier Werte.<br/>
+          <span class="inline-block" style="background:#86EFAC;border:2px solid #0B0B0B;padding:0 12px;box-shadow:5px 5px 0 #0B0B0B;transform:rotate(-1deg);">Keine Kompromisse.</span>
+        </h2>
+
+        <p class="reveal max-w-md text-[17px] leading-[1.6] text-muted-ink mb-8">
+          Das sind nicht die Werte auf einer Landing-Page. Das sind die Filter, mit denen wir Mitglieder auswaehlen, Events kuratieren und Partnerschaften eingehen. Wenn ein Wert faellt, faellt der Club.
+        </p>
+
+        <div class="reveal flex flex-wrap gap-2">
+          <span class="sticker-meta px-3 py-2 border-zine border-ink-black rounded-md bg-cream-paper">#nonnegotiable</span>
+          <span class="sticker-meta px-3 py-2 border-zine border-ink-black rounded-md bg-mint-ambient">#Gemeinschaft</span>
+          <span class="sticker-meta px-3 py-2 border-zine border-ink-black rounded-md bg-sticker-yellow">#Qualitaet:aet</span>
+        </div>
+      </div>
+
+      <!-- RIGHT · Cluster sticker -->
+      <div class="cluster">
+        <!-- Sticker 1 -->
+        <div class="sticker square" style="top: 2%; left: 8%; background: #FBBF24; transform: rotate(-7deg); padding: 24px 20px; width: 48%;">
+          <div>
+            <div class="sticker-meta mb-1 text-ink-black/70">wert · 01</div>
+            <div class="text-2xl md:text-3xl">IntegriTaet</div>
+          </div>
+        </div>
+        <!-- Sticker 2 -->
+        <div class="sticker round" style="top: 12%; right: 4%; background: #EF4444; color: #FDFBF6; transform: rotate(6deg); padding: 22px 24px; width: 44%;">
+          <div>
+            <div class="sticker-meta mb-1 text-cream-paper/70">wert · 02</div>
+            <div class="text-xl md:text-2xl">DiversitAEt</div>
+          </div>
+        </div>
+        <!-- Sticker 3 -->
+        <div class="sticker tag" style="bottom: 18%; left: 2%; background: #60A5FA; transform: rotate(4deg); padding: 20px 18px; width: 52%;">
+          <div>
+            <div class="sticker-meta mb-1 text-ink-black/70">wert · 03</div>
+            <div class="text-xl md:text-2xl">CHancen<br/>gleich.</div>
+          </div>
+        </div>
+        <!-- Sticker 4 -->
+        <div class="sticker square" style="bottom: 2%; right: 10%; background: #86EFAC; transform: rotate(-4deg); padding: 22px 20px; width: 48%;">
+          <div>
+            <div class="sticker-meta mb-1 text-ink-black/70">wert · 04</div>
+            <div class="text-xl md:text-2xl">Nachhalt-<br/>igkeit</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SEÇÃO 04 · NÚMEROS DO MOVIMENTO [ink-black]
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="zahlen" class="bg-ink-black text-cream-paper py-20 md:py-32 px-5 md:px-10 border-b-2 border-ink-black relative overflow-hidden">
+
+  <!-- Stickers flutuantes -->
+  <div class="hidden md:block sticker round" style="top: 10%; right: 6%; background: #FBBF24; transform: rotate(-8deg);">
+    <div class="text-center">
+      <div class="sticker-meta text-ink-black/70">live · now</div>
+      <div class="text-lg">Tribe<br/>waechst</div>
+    </div>
+  </div>
+
+  <div class="max-w-[1400px] mx-auto relative z-10">
+
+    <div class="reveal flex items-center gap-3 mb-10">
+      <span class="w-3 h-3 bg-mint-ambient rounded-full inline-block"></span>
+      <span class="eyebrow text-cream-paper">§ 04 · Zahlen der Bewegung</span>
+    </div>
+
+    <h2 class="reveal font-black tracking-tightest leading-[0.9] mb-16 max-w-4xl"
+        style="font-size: clamp(36px, 6.5vw, 80px);">
+      Das ist <span class="inline-block" style="background:#86EFAC;color:#0B0B0B;border:2px solid #FDFBF6;padding:0 12px;box-shadow:5px 5px 0 #FDFBF6;transform:rotate(-1deg);">keine Pitch-Deck</span> Statistik. Das ist echter Bestand.
+    </h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
+      <div class="reveal">
+        <div class="scoreboard-num">240+</div>
+        <div class="eyebrow mt-3 text-cream-paper/60">Athlet:innen · aktiv</div>
+      </div>
+      <div class="reveal">
+        <div class="scoreboard-num" style="color:#FBBF24;">15</div>
+        <div class="eyebrow mt-3 text-cream-paper/60">Laender · Europa+</div>
+      </div>
+      <div class="reveal">
+        <div class="scoreboard-num" style="color:#60A5FA;">45</div>
+        <div class="eyebrow mt-3 text-cream-paper/60">Events / Jahr</div>
+      </div>
+      <div class="reveal">
+        <div class="scoreboard-num" style="color:#EF4444;">0</div>
+        <div class="eyebrow mt-3 text-cream-paper/60">langweilige Panels</div>
+      </div>
+    </div>
+
+    <!-- footnote row -->
+    <div class="reveal mt-16 grid md:grid-cols-3 gap-6 pt-10 border-t-2 border-cream-paper/20">
+      <div>
+        <div class="eyebrow text-mint-ambient mb-2">§ durchschnitt</div>
+        <p class="text-[15px] text-cream-paper/80 leading-[1.55]">
+          3.2 neue Verbindungen pro Event. Keine Visitenkarten. Nur Namen, die bleiben.
+        </p>
+      </div>
+      <div>
+        <div class="eyebrow text-mint-ambient mb-2">§ retention</div>
+        <p class="text-[15px] text-cream-paper/80 leading-[1.55]">
+          87% Mitglieder erneuern jaehrlich. Warum? Weil Qualitaet:aet sich nicht ersetzen laesst.
+        </p>
+      </div>
+      <div>
+        <div class="eyebrow text-mint-ambient mb-2">§ gender-mix</div>
+        <p class="text-[15px] text-cream-paper/80 leading-[1.55]">
+          52 / 48 Frauen zu Maennern. Keine Quoten. Nur Naturalitaet:aet der Tribe.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SEÇÃO 05 · COMO FUNCIONA (3 STEPS) [mint-deep]
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="wie" class="bg-mint-deep py-20 md:py-32 px-5 md:px-10 border-b-2 border-ink-black relative overflow-hidden">
+
+  <!-- Sticker de apoio -->
+  <div class="hidden md:block sticker tag" style="top: 8%; right: 6%; background: #0B0B0B; color: #86EFAC; transform: rotate(8deg);">
+    <div class="sticker-meta text-mint-ambient">3 · schritte · simpel</div>
+  </div>
+
+  <div class="max-w-[1400px] mx-auto">
+
+    <div class="reveal flex items-center gap-3 mb-10">
+      <span class="w-3 h-3 bg-ink-black rounded-full inline-block"></span>
+      <span class="eyebrow">§ 05 · So funktioniert's</span>
+    </div>
+
+    <h2 class="reveal font-black tracking-tightest leading-[0.9] mb-16 max-w-3xl"
+        style="font-size: clamp(40px, 7vw, 88px);">
+      Drei Schritte —<br/>
+      <span class="inline-block" style="background:#FDFBF6;border:2px solid #0B0B0B;padding:0 12px;box-shadow:5px 5px 0 #0B0B0B;transform:rotate(-1deg);">zero Small-Talk.</span>
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+
+      <!-- Step 01 -->
+      <div class="reveal">
+        <div class="tier" style="background:#FDFBF6;min-height:auto;">
+          <div class="eyebrow text-muted-ink mb-4">schritt · 01</div>
+          <div class="font-black text-7xl md:text-8xl mb-4 tracking-tightest text-ink-black" style="line-height:0.85;">01</div>
+          <h3 class="font-black text-2xl md:text-3xl mb-3 tracking-tight">Anwerbung auf Empfehlung</h3>
+          <p class="text-[15px] leading-[1.6] text-muted-ink">
+            Du kommst nicht rein, weil du zahlst. Du kommst rein, weil jemand aus der Tribe dich vouchet. Keine LinkedIn-Requests. Nur warme Einladungen.
+          </p>
+          <div class="mt-auto pt-6">
+            <span class="sticker-meta px-3 py-1.5 border-zine border-ink-black rounded-md bg-mint-ambient inline-block">referral · only</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 02 -->
+      <div class="reveal">
+        <div class="tier" style="background:#FBBF24;min-height:auto;">
+          <div class="eyebrow text-ink-black/70 mb-4">schritt · 02</div>
+          <div class="font-black text-7xl md:text-8xl mb-4 tracking-tightest text-ink-black" style="line-height:0.85;">02</div>
+          <h3 class="font-black text-2xl md:text-3xl mb-3 tracking-tight">Zeig dich auf dem Feld</h3>
+          <p class="text-[15px] leading-[1.6] text-ink-black/80">
+            Kein Pitch. Kein Deck. Du kommst zum Marathon, zum Turnier, zum Retreat. Du spielst. Du schwitzt. Du waechst. Die Tribe sieht, wer du wirklich bist.
+          </p>
+          <div class="mt-auto pt-6">
+            <span class="sticker-meta px-3 py-1.5 border-zine border-ink-black rounded-md bg-cream-paper inline-block">45 events / jahr</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 03 -->
+      <div class="reveal">
+        <div class="tier is-dark" style="background:#0B0B0B;color:#FDFBF6;min-height:auto;">
+          <div class="eyebrow text-mint-ambient mb-4">schritt · 03</div>
+          <div class="font-black text-7xl md:text-8xl mb-4 tracking-tightest" style="line-height:0.85;color:#86EFAC;">03</div>
+          <h3 class="font-black text-2xl md:text-3xl mb-3 tracking-tight">Echte Beziehungen. Echte Deals.</h3>
+          <p class="text-[15px] leading-[1.6] text-cream-paper/75">
+            Nach dem Spiel: Diner. Nach dem Diner: Gespraeche. Nach den Gespraechen: Deals, Investments, Karrieren. Alles echt. Nichts gepitcht.
+          </p>
+          <div class="mt-auto pt-6">
+            <span class="sticker-meta px-3 py-1.5 border-zine border-cream-paper rounded-md bg-mint-deep text-ink-black inline-block">after-game · only</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SEÇÃO 06 · TESTEMUNHO ATIVISTA:IN [mint-ambient · NÃO dark]
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="stimme" class="bg-mint-ambient py-20 md:py-32 px-5 md:px-10 border-b-2 border-ink-black relative overflow-hidden">
+
+  <!-- Sticker de suporte -->
+  <div class="hidden md:block sticker square" style="top: 12%; left: 4%; background: #FBBF24; transform: rotate(-6deg);">
+    <div class="sticker-meta">voice · 01</div>
+  </div>
+  <div class="hidden lg:block sticker round" style="bottom: 14%; right: 5%; background: #EF4444; color: #FDFBF6; transform: rotate(7deg);">
+    <div class="text-center">
+      <div class="sticker-meta text-cream-paper/70">olympia</div>
+      <div class="text-xl">GOLD</div>
+    </div>
   </div>
 
   <div class="max-w-[1100px] mx-auto relative z-10">
-    <div class="reveal mb-8 flex items-center gap-3">
-      <span class="w-3 h-3 bg-orange rounded-full inline-block"></span>
-      <span class="label-mono text-dim">§ Conversation, not conversion</span>
+
+    <div class="reveal flex items-center gap-3 mb-10">
+      <span class="w-3 h-3 bg-sticker-red rounded-full inline-block"></span>
+      <span class="eyebrow">§ 06 · Stimme aus der Tribe</span>
     </div>
-    <h2 class="reveal display text-[clamp(3rem,9vw,8rem)] font-bold leading-[0.9] tracking-tightest mb-12">
-      READy<br>to join?
-    </h2>
-    <p class="reveal text-[19px] leading-[1.6] text-dim max-w-2xl mb-12 font-light">
-      Vereinbare ein Gespräch mit unserem Team — 30 Minuten, ohne Agenda, ohne Sales. Wir hören zu und sagen dir ehrlich, ob dein Profil zur Tribe passt.
-    </p>
-    <div class="reveal flex flex-col sm:flex-row gap-4">
-      <a href="#" class="magnetic hover-target bg-ink text-cream px-8 py-5 rounded-full label-mono hover:bg-orange transition-colors inline-flex items-center gap-3">
-        Book 30-min call <span aria-hidden="true">→</span>
-      </a>
-      <a href="mailto:hello@champions4good.club" class="magnetic hover-target px-8 py-5 rounded-full label-mono border border-ink/20 hover:bg-ink hover:text-cream transition-all inline-flex items-center gap-3">
-        Write to us
-      </a>
+
+    <blockquote class="reveal font-black tracking-tightest leading-[1.02] text-ink-black mb-12"
+                style="font-size: clamp(28px, 5vw, 56px);">
+      <span style="font-size: 1.8em; line-height: 0.7; color: #EF4444; margin-right: 4px;">“</span>Mit Champions for Good ist eine Plattform entstanden, die <span class="pull-highlight" style="background:#FDFBF6;">Athlet:innen Zugang</span> zu einem vielseitigen Netzwerk eroeffnet — <span class="pull-highlight" style="background:#FBBF24;">ohne die klass-ischen Silos</span>.<span style="font-size: 1.8em; line-height: 0.7; color: #EF4444; margin-left: 4px;">”</span>
+    </blockquote>
+
+    <div class="reveal flex items-center gap-5 pt-8 border-t-2 border-ink-black">
+      <!-- Avatar placeholder (SVG) -->
+      <div class="shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-full border-zine border-ink-black bg-cream-paper overflow-hidden" aria-hidden="true">
+        <svg viewBox="0 0 80 80" width="100%" height="100%">
+          <rect width="80" height="80" fill="#FDFBF6"/>
+          <circle cx="40" cy="32" r="14" fill="#0B0B0B"/>
+          <path d="M10 72 Q10 50 40 50 Q70 50 70 72 Z" fill="#0B0B0B"/>
+          <circle cx="34" cy="30" r="2" fill="#FDFBF6"/>
+          <circle cx="46" cy="30" r="2" fill="#FDFBF6"/>
+        </svg>
+      </div>
+      <div>
+        <div class="font-black text-xl md:text-2xl tracking-tight">Deborah Levi</div>
+        <div class="eyebrow text-ink-black/70 mt-1">Olympiasiegerin · Bob · DE</div>
+      </div>
+
+      <!-- Meta tape -->
+      <div class="ml-auto hidden md:block">
+        <span class="tape" style="transform: rotate(2deg);">verified · 2024</span>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     FOOTER
+     SEÇÃO 07 · CLUSTER "FUER WEN" [cream-paper]
      ═══════════════════════════════════════════════════════════════════════ -->
-<footer class="bg-ink text-cream py-16 px-6 lg:px-10">
+<section id="fuer-wen" class="bg-cream-paper py-20 md:py-32 px-5 md:px-10 border-b-2 border-ink-black">
   <div class="max-w-[1400px] mx-auto">
-    <div class="grid md:grid-cols-4 gap-10 mb-12">
-      <div class="md:col-span-2">
-        <div class="flex items-center gap-2 mb-4">
-          <svg width="40" height="40" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="#FDE047"/><path d="M11 18l5 5 9-12" stroke="#0B0B0F" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="display text-2xl font-semibold">Champions<span class="text-orange">4</span>Good</span>
+
+    <div class="grid lg:grid-cols-[auto_1fr] gap-12 lg:gap-20 items-center">
+
+      <!-- LEFT · Cluster -->
+      <div class="cluster">
+        <!-- Sticker 1 -->
+        <div class="sticker square" style="top: 2%; left: 4%; background: #EF4444; color: #FDFBF6; transform: rotate(-6deg); padding: 20px 18px; width: 50%;">
+          <div>
+            <div class="sticker-meta text-cream-paper/70 mb-1">type · 01</div>
+            <div class="text-xl md:text-2xl">Athlet:<br/>innen</div>
+          </div>
         </div>
-        <p class="text-cream/70 max-w-sm text-[14px] leading-relaxed font-light">
-          The tribe where athletes, founders, executives and investors meet around sport — not around business cards.
+        <!-- Sticker 2 -->
+        <div class="sticker round" style="top: 10%; right: 2%; background: #FBBF24; transform: rotate(8deg); padding: 22px 22px; width: 46%;">
+          <div>
+            <div class="sticker-meta mb-1 text-ink-black/70">type · 02</div>
+            <div class="text-xl md:text-2xl">Founder:<br/>innen</div>
+          </div>
+        </div>
+        <!-- Sticker 3 -->
+        <div class="sticker tag" style="bottom: 20%; left: 0%; background: #60A5FA; transform: rotate(5deg); padding: 20px 18px; width: 54%;">
+          <div>
+            <div class="sticker-meta mb-1 text-ink-black/70">type · 03</div>
+            <div class="text-xl md:text-2xl">Executive:<br/>innen</div>
+          </div>
+        </div>
+        <!-- Sticker 4 -->
+        <div class="sticker square" style="bottom: 4%; right: 6%; background: #86EFAC; transform: rotate(-3deg); padding: 22px 20px; width: 48%;">
+          <div>
+            <div class="sticker-meta mb-1 text-ink-black/70">type · 04</div>
+            <div class="text-xl md:text-2xl">Investor:<br/>innen</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT · Copy -->
+      <div>
+        <div class="reveal flex items-center gap-3 mb-6">
+          <span class="w-3 h-3 bg-sticker-blue rounded-full inline-block"></span>
+          <span class="eyebrow">§ 07 · Fuer wen?</span>
+        </div>
+
+        <h2 class="reveal font-black tracking-tightest leading-[0.9] mb-8"
+            style="font-size: clamp(40px, 7vw, 88px);">
+          Fuer Menschen,<br/>
+          <span class="inline-block" style="background:#60A5FA;border:2px solid #0B0B0B;padding:0 12px;box-shadow:5px 5px 0 #0B0B0B;transform:rotate(1deg);">die spielen.</span><br/>
+          Nicht pitchen.
+        </h2>
+
+        <p class="reveal max-w-md text-[17px] leading-[1.6] text-muted-ink mb-8">
+          Vier Profile. Eine Tribe. Der Club funktioniert, weil alle vier gleichzeitig da sind — und niemand den anderen <strong class="font-black text-ink-black">fuer einen Deal benutzt</strong>. Wir nennen das: Chancen-Gleichheit durch Sport.
         </p>
-      </div>
-      <div>
-        <div class="label-mono text-cream/50 mb-4">Explore</div>
-        <ul class="space-y-2 text-[14px] font-light">
-          <li><a href="#members" class="hover:text-yellow transition-colors hover-target">Members</a></li>
-          <li><a href="#events" class="hover:text-yellow transition-colors hover-target">Events</a></li>
-          <li><a href="#faq" class="hover:text-yellow transition-colors hover-target">FAQ</a></li>
-          <li><a href="#join" class="hover:text-yellow transition-colors hover-target">Join</a></li>
+
+        <ul class="reveal space-y-3">
+          <li class="flex gap-3 items-start">
+            <span class="shrink-0 w-6 h-6 border-zine border-ink-black rounded-full bg-mint-ambient flex items-center justify-center font-black text-xs mt-0.5">✓</span>
+            <span class="text-[15px] leading-[1.55]"><strong class="font-black">Athlet:innen</strong> finden ihre naechste Karriere</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <span class="shrink-0 w-6 h-6 border-zine border-ink-black rounded-full bg-mint-ambient flex items-center justify-center font-black text-xs mt-0.5">✓</span>
+            <span class="text-[15px] leading-[1.55]"><strong class="font-black">Founder:innen</strong> bekommen Zugang zu echten Mentor:innen</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <span class="shrink-0 w-6 h-6 border-zine border-ink-black rounded-full bg-mint-ambient flex items-center justify-center font-black text-xs mt-0.5">✓</span>
+            <span class="text-[15px] leading-[1.55]"><strong class="font-black">Executive:innen</strong> sehen Talent, bevor es auf LinkedIn ist</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <span class="shrink-0 w-6 h-6 border-zine border-ink-black rounded-full bg-mint-ambient flex items-center justify-center font-black text-xs mt-0.5">✓</span>
+            <span class="text-[15px] leading-[1.55]"><strong class="font-black">Investor:innen</strong> finden Grueder:innen mit Spirit — nicht mit Deck</span>
+          </li>
         </ul>
       </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SEÇÃO 08 · TIERS PRICING (4 CARDS) [cream-paper]
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="tiers" class="bg-cream-paper py-20 md:py-32 px-5 md:px-10 border-b-2 border-ink-black">
+  <div class="max-w-[1400px] mx-auto">
+
+    <div class="reveal flex items-center gap-3 mb-6">
+      <span class="w-3 h-3 bg-ink-black rounded-full inline-block"></span>
+      <span class="eyebrow">§ 08 · Mitgliedschaft · Tiers</span>
+    </div>
+
+    <div class="reveal max-w-3xl mb-14">
+      <h2 class="font-black tracking-tightest leading-[0.9] mb-6"
+          style="font-size: clamp(40px, 7vw, 88px);">
+        Vier Tiers.<br/>
+        <span class="inline-block" style="background:#FBBF24;border:2px solid #0B0B0B;padding:0 12px;box-shadow:5px 5px 0 #0B0B0B;transform:rotate(-1deg);">Klarer Preis.</span>
+      </h2>
+      <p class="text-[17px] leading-[1.6] text-muted-ink max-w-xl">
+        Athlet:innen kostenfrei. Alle anderen zahlen — weil Qualitaet:aet der Tribe den Preis rechtfertigt. Keine versteckten Kosten. Keine Jahresstaffeln. Kein Bullshit.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-7 items-stretch">
+
+      <!-- TIER 1 · ATHLETE (mint-deep) -->
+      <div class="reveal">
+        <article class="tier" style="background:#34D399;">
+          <div class="eyebrow text-ink-black/70 mb-4">tier · 01</div>
+          <div class="font-black text-3xl md:text-4xl tracking-tight mb-3">Athlete</div>
+          <p class="text-[14px] leading-[1.55] text-ink-black/75 mb-8">Fuer aktive und ehemalige Profi-Sportler:innen. Empfehlung erforderlich.</p>
+
+          <div class="mb-8">
+            <div class="tier-price">€0</div>
+            <div class="eyebrow text-ink-black/60 mt-1">kostenfrei · always</div>
+          </div>
+
+          <ul class="space-y-2.5 text-[14px] mb-8 flex-1">
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Alle 45 Events / Jahr</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> 240+ Athlet:innen-Netzwerk</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Career-after-sport Beratung</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Mentoring (1:1 · monatlich)</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Investment-Intros on-demand</li>
+          </ul>
+
+          <a href="#join" class="btn-zine btn-secondary hover-target magnetic">
+            Bewerben →
+          </a>
+        </article>
+      </div>
+
+      <!-- TIER 2 · BOOSTER (sticker-yellow) + RIBBON -->
+      <div class="reveal">
+        <article class="tier" style="background:#FBBF24;">
+          <span class="tier-ribbon is-pending">most popular</span>
+          <div class="eyebrow text-ink-black/70 mb-4">tier · 02</div>
+          <div class="font-black text-3xl md:text-4xl tracking-tight mb-3">Booster</div>
+          <p class="text-[14px] leading-[1.55] text-ink-black/75 mb-8">Fuer Unternehmer:innen und Grueder:innen mit Zugang zur Tribe.</p>
+
+          <div class="mb-8">
+            <div class="tier-price">€85<span class="text-xl">/mo</span></div>
+            <div class="eyebrow text-ink-black/60 mt-1">jaehrlich · €850</div>
+          </div>
+
+          <ul class="space-y-2.5 text-[14px] mb-8 flex-1">
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> 30 Events / Jahr · Zugang</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Athlet:innen-Matching</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Monatliche Stammtische</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Private Slack · #boosters</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Direkter Draht zum Team</li>
+          </ul>
+
+          <a href="#join" class="btn-zine btn-primary hover-target magnetic">
+            Jetzt beitreten →
+          </a>
+        </article>
+      </div>
+
+      <!-- TIER 3 · BUSINESS (cream-paper) -->
+      <div class="reveal">
+        <article class="tier" style="background:#FDFBF6;">
+          <div class="eyebrow text-ink-black/70 mb-4">tier · 03</div>
+          <div class="font-black text-3xl md:text-4xl tracking-tight mb-3">Business</div>
+          <p class="text-[14px] leading-[1.55] text-muted-ink mb-8">Fuer Executive:innen und Corporate-Partner mit strategischem Interesse.</p>
+
+          <div class="mb-8">
+            <div class="tier-price">€150<span class="text-xl">/mo</span></div>
+            <div class="eyebrow text-ink-black/60 mt-1">jaehrlich · €1.500</div>
+          </div>
+
+          <ul class="space-y-2.5 text-[14px] mb-8 flex-1">
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Alle 45 Events / Jahr</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Branding-Sichtbarkeit (dezent)</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Talent-Pool Zugriff</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Privat-Retreats (2 / Jahr)</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black">✓</span> Executive-Sparring</li>
+          </ul>
+
+          <a href="#join" class="btn-zine btn-secondary hover-target magnetic">
+            Gespraech starten →
+          </a>
+        </article>
+      </div>
+
+      <!-- TIER 4 · PARTNER (ink-black + mint text) -->
+      <div class="reveal">
+        <article class="tier is-dark" style="background:#0B0B0B;color:#FDFBF6;">
+          <div class="eyebrow text-mint-ambient mb-4">tier · 04 · premium</div>
+          <div class="font-black text-3xl md:text-4xl tracking-tight mb-3" style="color:#86EFAC;">Partner</div>
+          <p class="text-[14px] leading-[1.55] text-cream-paper/75 mb-8">Fuer Investor:innen, Funds und Sponsor:innen mit Deep Commitment.</p>
+
+          <div class="mb-8">
+            <div class="tier-price" style="color:#86EFAC;">€500<span class="text-xl">/mo</span></div>
+            <div class="eyebrow text-cream-paper/50 mt-1">oder · individuell</div>
+          </div>
+
+          <ul class="space-y-2.5 text-[14px] mb-8 flex-1">
+            <li class="flex gap-2.5 items-start"><span class="font-black text-mint-ambient">✓</span> Alles aus Business</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black text-mint-ambient">✓</span> Deal-Flow (kuratiert)</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black text-mint-ambient">✓</span> Founder-Introductions</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black text-mint-ambient">✓</span> Event-Co-Hosting</li>
+            <li class="flex gap-2.5 items-start"><span class="font-black text-mint-ambient">✓</span> Strategischer Board-Seat (opt.)</li>
+          </ul>
+
+          <a href="#join" class="btn-zine btn-on-dark hover-target magnetic">
+            Partner werden →
+          </a>
+        </article>
+      </div>
+
+    </div>
+
+    <!-- Footer note -->
+    <div class="reveal mt-14 flex flex-wrap items-center gap-3">
+      <span class="tape" style="transform: rotate(-1deg);">no setup fees · no lock-in</span>
+      <span class="eyebrow text-muted-ink">Kuendigung monatlich · wir rechnen fair</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SEÇÃO 09 · FAQ TRANSLITERADO [cream-paper]
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="faq" class="bg-cream-paper py-20 md:py-32 px-5 md:px-10 border-b-2 border-ink-black">
+  <div class="max-w-[1000px] mx-auto">
+
+    <div class="reveal flex items-center gap-3 mb-6">
+      <span class="w-3 h-3 bg-sticker-red rounded-full inline-block"></span>
+      <span class="eyebrow">§ 09 · Oft gefragt · oft geantwortet</span>
+    </div>
+
+    <h2 class="reveal font-black tracking-tightest leading-[0.9] mb-12"
+        style="font-size: clamp(36px, 6vw, 72px);">
+      Fragen, die<br/>
+      <span class="inline-block" style="background:#EF4444;color:#FDFBF6;border:2px solid #0B0B0B;padding:0 12px;box-shadow:5px 5px 0 #0B0B0B;transform:rotate(-1deg);">alle stellen.</span>
+    </h2>
+
+    <div class="space-y-4">
+
+      <details class="faq-item reveal">
+        <summary class="hover-target">Fuer wen ist der Club?</summary>
+        <div class="faq-body">
+          Fuer Athlet:innen, Unternehmer:innen, Executives und Investor:innen. Nicht fuer LinkedIn-Pitches. Nicht fuer Cold Outreach. Nur fuer Menschen, die bereit sind, im Sport echte Beziehungen zu bauen.
+        </div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary class="hover-target">Was kostet das?</summary>
+        <div class="faq-body">
+          Athlet:innen kostenfrei — immer. Booster ab €85/mo (Founder:innen, Unternehmer:innen). Business ab €150/mo (Executive:innen, Corporates). Partner ab €500/mo (Investor:innen, Funds). Alle monatlich kuendbar.
+        </div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary class="hover-target">Wie bewerbe ich mich?</summary>
+        <div class="faq-body">
+          Ueber Empfehlung eines Mitglieds — oder direkt ueber unser Team. Wir fuehren ein 30-Minuten-Gespraech (ohne Agenda, ohne Sales) und sagen ehrlich, ob dein Profil zur Tribe passt. Keine automatischen Zusagen.
+        </div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary class="hover-target">Gibt's eine Frauenquote?</summary>
+        <div class="faq-body">
+          Nein. Wir haben aktuell 52/48 Frauen-zu-Maenner-Verhaeltnis — weil der Club so kuratiert ist, nicht weil eine Quote existiert. <strong>Keine Quoten. Nur Qualitaet:aet.</strong>
+        </div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary class="hover-target">Was sind die Events genau?</summary>
+        <div class="faq-body">
+          Marathons, Padel-Turniere, Fussball-Saturdays, Ski-Retreats, Sailing-Weekends, HIIT-Camps, Boxing-Nights. 45 Events / Jahr — alle mit dem gleichen Prinzip: Sport zuerst, Business danach (manchmal gar nicht).
+        </div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary class="hover-target">Wo seid ihr aktiv?</summary>
+        <div class="faq-body">
+          Haupt-Hub Muenchen. Aktive Chapters in Berlin, Zuerich, Wien, Mailand, London, Kopenhagen. 15 Laender insgesamt. Jedes Chapter hat eine:n Community Lead — Athletes, nicht Marketeers.
+        </div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary class="hover-target">Kann ich auch als Nicht-Deutschsprachige:r beitreten?</summary>
+        <div class="faq-body">
+          Yes. Events run bilingually — Deutsch und Englisch. Slack is English-first. Every chapter lead speaks both. We don't gatekeep by language — we gatekeep by spirit.
+        </div>
+      </details>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SEÇÃO 10 · CLUSTER "JETZT" [mint-deep]
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="jetzt" class="bg-mint-deep py-20 md:py-32 px-5 md:px-10 border-b-2 border-ink-black">
+  <div class="max-w-[1400px] mx-auto">
+
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+      <!-- LEFT · Copy -->
       <div>
-        <div class="label-mono text-cream/50 mb-4">Legal</div>
-        <ul class="space-y-2 text-[14px] font-light">
-          <li><a href="#" class="hover:text-yellow transition-colors hover-target">Impressum</a></li>
-          <li><a href="#" class="hover:text-yellow transition-colors hover-target">Datenschutz</a></li>
-          <li><a href="#" class="hover:text-yellow transition-colors hover-target">AGB</a></li>
-          <li><a href="#" class="hover:text-yellow transition-colors hover-target">LinkedIn ↗</a></li>
+        <div class="reveal flex items-center gap-3 mb-6">
+          <span class="w-3 h-3 bg-ink-black rounded-full inline-block"></span>
+          <span class="eyebrow">§ 10 · Die Uhr tickt</span>
+        </div>
+
+        <h2 class="reveal font-black tracking-tightest leading-[0.88] mb-8"
+            style="font-size: clamp(44px, 8vw, 104px);">
+          JETZT.<br/>
+          <span class="inline-block" style="background:#0B0B0B;color:#FDFBF6;border:2px solid #0B0B0B;padding:0 14px;box-shadow:6px 6px 0 #FDFBF6;transform:rotate(-1deg);">Nicht 2027.</span>
+        </h2>
+
+        <p class="reveal max-w-md text-[17px] leading-[1.6] text-ink-black/85 mb-8 font-medium">
+          Wir schliessen Bewerbungen alle 3 Monate. Naechste Cohort: <strong class="font-black">Quartal 2 · 2026</strong>. Wenn du dich jetzt nicht meldest, wartest du <strong class="font-black">120 Tage</strong> auf das naechste Gespraech.
+        </p>
+
+        <a href="#join" class="reveal btn-zine btn-primary hover-target magnetic">
+          Platz sichern · jetzt <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <!-- RIGHT · Cluster JETZT -->
+      <div class="cluster">
+        <!-- Big JETZT -->
+        <div class="sticker round" style="top: 5%; left: 10%; background: #EF4444; color: #FDFBF6; transform: rotate(-8deg); padding: 36px 36px; width: 55%;">
+          <div class="text-center">
+            <div class="sticker-meta text-cream-paper/70 mb-2">urgency · max</div>
+            <div class="font-black" style="font-size: clamp(36px, 7vw, 64px); line-height: 0.9; letter-spacing:-0.04em;">JETZT</div>
+          </div>
+        </div>
+        <!-- Countdown -->
+        <div class="sticker square" style="top: 14%; right: 2%; background: #FBBF24; transform: rotate(6deg); padding: 20px 18px; width: 40%;">
+          <div>
+            <div class="sticker-meta mb-1 text-ink-black/70">cohort · Q2</div>
+            <div class="text-xl md:text-2xl">120 Tage<br/>bis Q3</div>
+          </div>
+        </div>
+        <!-- Spots Left -->
+        <div class="sticker tag" style="bottom: 20%; left: 4%; background: #60A5FA; transform: rotate(4deg); padding: 18px 16px; width: 44%;">
+          <div>
+            <div class="sticker-meta mb-1 text-ink-black/70">spots</div>
+            <div class="text-xl md:text-2xl">nur 12<br/>offen</div>
+          </div>
+        </div>
+        <!-- Meta -->
+        <div class="sticker square" style="bottom: 4%; right: 8%; background: #FDFBF6; transform: rotate(-4deg); padding: 18px 16px; width: 44%;">
+          <div>
+            <div class="sticker-meta mb-1 text-ink-black/70">decision · 30min</div>
+            <div class="text-xl md:text-2xl">kein<br/>Sales</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SEÇÃO 11 · CTA FINAL BILÍNGUE [ink-black]
+     ═══════════════════════════════════════════════════════════════════════ -->
+<section id="join" class="bg-ink-black text-cream-paper py-24 md:py-36 px-5 md:px-10 border-b-2 border-ink-black relative overflow-hidden">
+
+  <!-- Stickers flutuantes no dark -->
+  <div class="hidden md:block sticker round" style="top: 10%; right: 8%; background: #86EFAC; transform: rotate(-8deg);">
+    <div class="text-center">
+      <div class="sticker-meta text-ink-black/70">no bullshit</div>
+      <div class="font-black text-xl text-ink-black">ZONE</div>
+    </div>
+  </div>
+  <div class="hidden lg:block sticker square" style="bottom: 12%; left: 4%; background: #FBBF24; transform: rotate(5deg);">
+    <div class="sticker-meta text-ink-black/70">30 · min · only</div>
+  </div>
+
+  <div class="max-w-[1100px] mx-auto relative z-10 text-center">
+
+    <div class="reveal flex items-center justify-center gap-3 mb-10">
+      <span class="w-3 h-3 bg-mint-ambient rounded-full inline-block"></span>
+      <span class="eyebrow text-cream-paper">§ 11 · Das letzte Wort</span>
+    </div>
+
+    <h2 class="reveal font-black tracking-tightest leading-[0.88] mb-6"
+        style="font-size: clamp(48px, 10vw, 144px);">
+      READy<br/>
+      <span class="inline-block" style="background:#86EFAC;color:#0B0B0B;border:2px solid #FDFBF6;padding:0 16px;box-shadow:6px 6px 0 #FDFBF6;transform:rotate(-1deg);">fuer das<br/>echte</span><br/>
+      Spiel?
+    </h2>
+
+    <p class="reveal text-[18px] md:text-[22px] leading-[1.5] text-cream-paper/80 max-w-2xl mx-auto mb-12 font-medium">
+      Werde Teil der Bewegung.<br/>
+      <span class="text-cream-paper/60">Become part of the movement.</span>
+    </p>
+
+    <div class="reveal flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
+      <a href="mailto:hello@champions4good.club" class="btn-zine btn-on-dark hover-target magnetic">
+        Join the movement <span aria-hidden="true">→</span>
+      </a>
+      <a href="#manifesto" class="btn-zine hover-target magnetic" style="background:transparent;color:#FDFBF6;border-color:#FDFBF6;box-shadow:4px 4px 0 #FDFBF6;">
+        Book 30-min call
+      </a>
+    </div>
+
+    <p class="reveal eyebrow text-cream-paper/60">
+      Keine Quoten. Nur Qualitaet:aet.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SEÇÃO 12 · FOOTER KRAFT [cream-paper]
+     ═══════════════════════════════════════════════════════════════════════ -->
+<footer class="bg-cream-paper py-16 md:py-20 px-5 md:px-10">
+  <div class="max-w-[1400px] mx-auto">
+
+    <!-- Row 1 · Brand + links -->
+    <div class="grid md:grid-cols-[2fr_1fr_1fr_1fr] gap-10 mb-14">
+
+      <div>
+        <a href="#top" class="flex items-center gap-2 mb-4 hover-target">
+          <span class="inline-block w-10 h-10 bg-ink-black border-zine border-ink-black rounded-md flex items-center justify-center text-mint-ambient font-black text-xl leading-none">C</span>
+          <span class="font-black text-2xl tracking-tight">Champions<span class="text-sticker-red">4</span>Good</span>
+        </a>
+        <p class="text-[15px] leading-[1.6] text-muted-ink max-w-sm mb-5">
+          Der Club fuer Champion:innen — von Champion:innen. <strong class="font-black text-ink-black">Nicht fuer LinkedIn-Pitches.</strong>
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="sticker-meta px-2.5 py-1.5 border-zine border-ink-black rounded-md bg-mint-ambient inline-block">Muenchen · HQ</span>
+          <span class="sticker-meta px-2.5 py-1.5 border-zine border-ink-black rounded-md bg-sticker-yellow inline-block">est. 2024</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="eyebrow mb-4 text-muted-ink">§ Navigieren</div>
+        <ul class="space-y-2.5 text-[15px]">
+          <li><a href="#manifesto" class="hover-target hover:text-sticker-red transition-colors">Manifest</a></li>
+          <li><a href="#werte" class="hover-target hover:text-sticker-red transition-colors">Werte</a></li>
+          <li><a href="#zahlen" class="hover-target hover:text-sticker-red transition-colors">Zahlen</a></li>
+          <li><a href="#tiers" class="hover-target hover:text-sticker-red transition-colors">Tiers</a></li>
+          <li><a href="#faq" class="hover-target hover:text-sticker-red transition-colors">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="eyebrow mb-4 text-muted-ink">§ Chapters</div>
+        <ul class="space-y-2.5 text-[15px]">
+          <li><a href="#" class="hover-target hover:text-sticker-red transition-colors">Muenchen</a></li>
+          <li><a href="#" class="hover-target hover:text-sticker-red transition-colors">Berlin</a></li>
+          <li><a href="#" class="hover-target hover:text-sticker-red transition-colors">Zuerich</a></li>
+          <li><a href="#" class="hover-target hover:text-sticker-red transition-colors">Wien</a></li>
+          <li><a href="#" class="hover-target hover:text-sticker-red transition-colors">alle 15 Laender →</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="eyebrow mb-4 text-muted-ink">§ Rechtliches</div>
+        <ul class="space-y-2.5 text-[15px]">
+          <li><a href="#" class="hover-target hover:text-sticker-red transition-colors">Impressum</a></li>
+          <li><a href="#" class="hover-target hover:text-sticker-red transition-colors">Datenschutz</a></li>
+          <li><a href="#" class="hover-target hover:text-sticker-red transition-colors">AGB</a></li>
+          <li><a href="#" class="hover-target hover:text-sticker-red transition-colors">LinkedIn ↗</a></li>
+          <li><a href="#" class="hover-target hover:text-sticker-red transition-colors">Instagram ↗</a></li>
         </ul>
       </div>
     </div>
-    <div class="pt-8 border-t border-cream/10 flex flex-col md:flex-row justify-between gap-3 label-mono text-cream/40">
-      <span>© 2026 · Champions for Good · Munich</span>
-      <span>Recreated by JARVIS · Mega Brain · 2026-04</span>
+
+    <!-- Row 2 · Bar legal -->
+    <div class="pt-8 border-t-2 border-ink-black flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div class="eyebrow text-muted-ink">
+        © 2026 · Champions for Good · Muenchen · DE
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="tape" style="transform: rotate(-1deg);">made with · WIRkung</span>
+        <span class="eyebrow text-muted-ink">v2 · recreated by JARVIS · Mega Brain</span>
+      </div>
     </div>
+
   </div>
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════
-     SCRIPTS
+     SCRIPTS · Motion + Lenis + Cursor (preservado da v1 · calibrado)
      ═══════════════════════════════════════════════════════════════════════ -->
 <script>
-(function() {
+(function () {
   'use strict';
+
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isCoarse = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  const isCoarse      = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
   gsap.registerPlugin(ScrollTrigger);
   const EASE = 'power3.out';
+  const BACK = 'back.out(1.7)';
 
-  /* 1 · LENIS */
+  // ───────── 1 · LENIS smooth scroll ─────────
   if (!reducedMotion && typeof Lenis !== 'undefined') {
-    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10*t)), smoothWheel: true });
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      smoothTouch: false,
+    });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
     lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add(time => lenis.raf(time*1000));
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
+
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
         const id = a.getAttribute('href');
-        if (id.length > 1 && document.querySelector(id)) { e.preventDefault(); lenis.scrollTo(id, { offset: -80, duration: 1.4 }); }
+        if (id && id.length > 1 && document.querySelector(id)) {
+          e.preventDefault();
+          lenis.scrollTo(id, { offset: -80, duration: 1.3 });
+        }
       });
     });
   }
 
-  /* 2 · CURSOR */
+  // ───────── 2 · CUSTOM CURSOR (desktop only) ─────────
   if (!isCoarse && !reducedMotion) {
-    const dot = document.querySelector('.cursor-dot');
+    const dot  = document.querySelector('.cursor-dot');
     const ring = document.querySelector('.cursor-ring');
-    let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
-    addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.setProperty('--cursor-x', mx+'px'); dot.style.setProperty('--cursor-y', my+'px');
-    });
-    (function loop() {
-      rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
-      ring.style.setProperty('--cursor-x', rx+'px'); ring.style.setProperty('--cursor-y', ry+'px');
-      requestAnimationFrame(loop);
-    })();
-    document.querySelectorAll('.hover-target, a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
-    document.querySelectorAll('.magnetic').forEach(el => {
-      el.addEventListener('mousemove', e => {
-        const r = el.getBoundingClientRect();
-        gsap.to(el, { x: (e.clientX - r.left - r.width/2)*0.3, y: (e.clientY - r.top - r.height/2)*0.3, duration: 0.5, ease: EASE });
+    if (dot && ring) {
+      let mx = innerWidth / 2, my = innerHeight / 2;
+      let rx = mx, ry = my;
+
+      addEventListener('mousemove', (e) => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.setProperty('--cursor-x', mx + 'px');
+        dot.style.setProperty('--cursor-y', my + 'px');
       });
-      el.addEventListener('mouseleave', () => gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.5)' }));
+
+      (function loop() {
+        rx += (mx - rx) * 0.17;
+        ry += (my - ry) * 0.17;
+        ring.style.setProperty('--cursor-x', rx + 'px');
+        ring.style.setProperty('--cursor-y', ry + 'px');
+        requestAnimationFrame(loop);
+      })();
+
+      document.querySelectorAll('.hover-target, a, button, details summary').forEach((el) => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+
+      // Magnetic buttons
+      document.querySelectorAll('.magnetic').forEach((el) => {
+        el.addEventListener('mousemove', (e) => {
+          const r = el.getBoundingClientRect();
+          gsap.to(el, {
+            x: (e.clientX - r.left - r.width / 2) * 0.25,
+            y: (e.clientY - r.top - r.height / 2) * 0.25,
+            duration: 0.4,
+            ease: EASE,
+          });
+        });
+        el.addEventListener('mouseleave', () => {
+          gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
+        });
+      });
+    }
+  }
+
+  // ───────── 3 · NAV scroll state ─────────
+  const nav = document.getElementById('nav');
+  if (nav) {
+    ScrollTrigger.create({
+      start: 60,
+      end: 99999,
+      onUpdate: (s) => nav.classList.toggle('is-scrolled', s.progress > 0),
     });
   }
 
-  /* 3 · NAV scroll state */
-  const nav = document.getElementById('nav');
-  ScrollTrigger.create({ start: 60, end: 999999, onUpdate: s => {
-    nav.classList.toggle('bg-cream/90', s.progress > 0);
-    nav.classList.toggle('backdrop-blur-md', s.progress > 0);
-    nav.classList.toggle('border-b', s.progress > 0);
-    nav.classList.toggle('border-ink/10', s.progress > 0);
-  }});
+  // ───────── 4 · HERO kinetic headline crossfade (Flow: medida dinâmica de altura) ─────────
+  const kineticStack = document.querySelector('.kinetic-stack');
+  const lines = document.querySelectorAll('.kinetic-line');
 
-  /* 4 · Hero carousel */
-  const slides = document.querySelectorAll('.hero-slide');
-  if (slides.length > 0 && !reducedMotion) {
+  // Flow: mede cada frase fora da cascata (clone sem position:absolute) para evitar pulo
+  function measureKineticHeight() {
+    if (!kineticStack || !lines.length) return;
+    let maxH = 0;
+    lines.forEach((ln) => {
+      const clone = ln.cloneNode(true);
+      clone.classList.remove('active');
+      clone.style.cssText = 'position:absolute;visibility:hidden;inset:auto;display:block;opacity:0;transform:none;';
+      kineticStack.appendChild(clone);
+      const h = clone.offsetHeight;
+      kineticStack.removeChild(clone);
+      if (h > maxH) maxH = h;
+    });
+    if (maxH > 0) kineticStack.style.setProperty('--kinetic-h', maxH + 'px');
+  }
+
+  if (lines.length > 0 && !reducedMotion) {
+    measureKineticHeight();
+
+    // Flow: re-medir em resize com debounce 150ms (fontes async podem mudar métrica)
+    let measureTimer;
+    addEventListener('resize', () => {
+      clearTimeout(measureTimer);
+      measureTimer = setTimeout(measureKineticHeight, 150);
+    });
+    // Fonts API garante remeasure depois que Inter 900 carrega
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(measureKineticHeight);
+    }
+
     let idx = 0;
     setInterval(() => {
-      slides[idx].classList.remove('active');
-      idx = (idx + 1) % slides.length;
-      slides[idx].classList.add('active');
-    }, 4500);
-  }
+      lines[idx].classList.remove('active');
+      idx = (idx + 1) % lines.length;
+      lines[idx].classList.add('active');
+    }, 3600);
 
-  /* 5 · Kinetic words */
-  if (!reducedMotion) {
-    gsap.to('.kinetic-word > span', { y: 0, duration: 1.2, ease: EASE, stagger: 0.08, delay: 0.3 });
-  } else {
-    document.querySelectorAll('.kinetic-word > span').forEach(s => s.style.transform = 'none');
-  }
-
-  /* 6 · Reveal */
-  if (!reducedMotion) {
-    document.querySelectorAll('.reveal').forEach(el => {
-      gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: EASE,
-        scrollTrigger: { trigger: el, start: 'top 88%', once: true }});
+    lines.forEach((ln) => {
+      ln.style.transition = 'opacity 1.2s cubic-bezier(.22,1,.36,1), transform 1.2s cubic-bezier(.22,1,.36,1)';
     });
   } else {
-    document.querySelectorAll('.reveal').forEach(el => { el.style.opacity = 1; el.style.transform = 'none'; });
+    lines.forEach((ln, i) => {
+      ln.style.opacity = i === 0 ? '1' : '0';
+      ln.style.transform = 'none';
+    });
   }
 
-  /* 7 · Theme toggle */
-  const themeBtn = document.getElementById('themeToggle');
-  const themeIcon = document.getElementById('themeIcon');
-  themeBtn.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-    const isDark = document.body.classList.contains('dark');
-    themeIcon.innerHTML = isDark
-      ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
-      : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+  // ───────── 5 · REVEAL on scroll ─────────
+  if (!reducedMotion) {
+    gsap.matchMedia().add('(min-width: 768px)', () => {
+      document.querySelectorAll('.reveal').forEach((el) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: EASE,
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+        });
+      });
+    });
+    gsap.matchMedia().add('(max-width: 767px)', () => {
+      // Mobile: faster, smaller offset
+      document.querySelectorAll('.reveal').forEach((el) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: EASE,
+          scrollTrigger: { trigger: el, start: 'top 92%', once: true },
+        });
+      });
+    });
+  } else {
+    document.querySelectorAll('.reveal').forEach((el) => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+  }
+
+  // ───────── 6 · STICKER CLUSTER entry (stagger + rotate + scale) ─────────
+  // Flow: após entry, stickers ganham drift idle (desktop only · is-coarse fica estático)
+  if (!reducedMotion) {
+    document.querySelectorAll('.cluster').forEach((cluster) => {
+      const stickers = cluster.querySelectorAll('.sticker');
+      if (!stickers.length) return;
+
+      stickers.forEach((s) => {
+        const current = s.style.transform || '';
+        s.dataset.targetTransform = current;
+        // Flow: grava base transform em CSS var para keyframe de drift usar
+        s.style.setProperty('--sticker-base', current);
+        s.style.opacity = '0';
+        s.style.transform = current + ' scale(0.6)';
+      });
+
+      const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+      const staggerVal = isDesktop ? 0.08 : 0.04;
+
+      ScrollTrigger.create({
+        trigger: cluster,
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+          stickers.forEach((s, i) => {
+            gsap.to(s, {
+              opacity: 1,
+              scale: 1,
+              duration: 0.7,
+              delay: i * staggerVal,
+              ease: BACK,
+              onComplete: () => {
+                s.style.transform = s.dataset.targetTransform;
+                s.style.opacity = '1';
+                // Flow: ativa drift SÓ em desktop (mobile economiza bateria)
+                if (isDesktop && !isCoarse) {
+                  s.classList.add('is-drifting');
+                }
+              },
+            });
+          });
+        },
+      });
+    });
+  } else {
+    document.querySelectorAll('.cluster .sticker').forEach((s) => {
+      s.style.opacity = '1';
+    });
+  }
+
+  // ───────── 7 · TIER hover enhance (GSAP · respects reduced-motion) ─────────
+  if (!reducedMotion) {
+    gsap.matchMedia().add('(hover: hover)', () => {
+      document.querySelectorAll('.tier').forEach((tier) => {
+        tier.addEventListener('mouseenter', () => {
+          gsap.to(tier, { y: -4, x: -2, duration: 0.25, ease: EASE });
+        });
+        tier.addEventListener('mouseleave', () => {
+          gsap.to(tier, { y: 0, x: 0, duration: 0.3, ease: EASE });
+        });
+      });
+    });
+  }
+
+  // ───────── 8 · FAQ details toggle close siblings (optional UX) ─────────
+  // Keep native <details> behavior. No forced accordion.
+
+  // ───────── 9 · TIER RIBBON pop-in (Flow · back.out físico) ─────────
+  // Badge "most popular" entra com pop físico quando o tier cruza o viewport.
+  // Respeita reduced-motion (classe is-pending limpa via CSS).
+  if (!reducedMotion) {
+    document.querySelectorAll('.tier-ribbon.is-pending').forEach((ribbon) => {
+      const parentTier = ribbon.closest('.tier') || ribbon.parentElement;
+      ScrollTrigger.create({
+        trigger: parentTier,
+        start: 'top 75%',
+        once: true,
+        onEnter: () => {
+          gsap.fromTo(ribbon,
+            { opacity: 0, rotation: -8, scale: 0.4 },
+            {
+              opacity: 1,
+              rotation: 4,   // alinha com transform do CSS original
+              scale: 1,
+              duration: 0.55,
+              delay: 0.15,
+              ease: 'back.out(2.5)',
+              onComplete: () => ribbon.classList.remove('is-pending'),
+            }
+          );
+        },
+      });
+    });
+  } else {
+    document.querySelectorAll('.tier-ribbon.is-pending').forEach((r) => r.classList.remove('is-pending'));
+  }
+
+  // ───────── 10 · MARQUEE STRIP parallax (Flow · desktop only) ─────────
+  // Parallax vertical sutil no divider preto · mobile OFF (economia + estabilidade).
+  if (!reducedMotion && !isCoarse) {
+    gsap.matchMedia().add('(min-width: 768px) and (hover: hover)', () => {
+      document.querySelectorAll('[data-parallax]').forEach((el) => {
+        const speed = parseFloat(el.dataset.parallax) || 0.3;
+        gsap.to(el, {
+          yPercent: -15 * speed,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top bottom',
+            end:   'bottom top',
+            scrub: 0.6,
+          },
+        });
+      });
+    });
+  }
+
+  // ───────── 11 · ScrollTrigger refresh on resize (Flow · Lenis guard) ─────────
+  // Lenis + ScrollTrigger podem dessincronizar em resize/orientation-change.
+  // Debounce 150ms para não disparar em cada frame durante drag de resize.
+  let stRefreshTimer;
+  addEventListener('resize', () => {
+    clearTimeout(stRefreshTimer);
+    stRefreshTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
+  });
+  addEventListener('orientationchange', () => {
+    setTimeout(() => ScrollTrigger.refresh(), 200);
   });
 
 })();
